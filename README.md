@@ -25,5 +25,7 @@
 - NOTE: Don't forget to run migrations on the production db as well
 
 ### DOCS
+
 #### [Connecting to Patient Assist Backend README](docs/connecting_to_backend.md)
+
 #### [Presence Health Browsing Data API README](docs/presence_health/browsing_data_API.md)
