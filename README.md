@@ -26,6 +26,6 @@
 
 ### DOCS
 
-#### [Connecting to Patient Assist Backend README](docs/connecting_to_backend.md)
+#### [Connecting to Patient Assist Backend README](documentation/connecting_to_backend.md)
 
-#### [Presence Health Browsing Data API README](docs/presence_health/browsing_data_API.md)
+#### [Presence Health Browsing Data API README](documentation/presence_health/browsing_data_API.md)
