@@ -32,7 +32,7 @@ connection.onopen = function (session) {
    //    }
    // ));
 
-    var browsing_data_obj = {"cookie_id": 16,
+    var browsing_data_obj = {"cookie_id": 1,
                             "keyword": "oncology",
                             "keyword_clicks": 2,
                             "keyword_hover_time": 3.2};
