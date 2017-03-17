@@ -1,5 +1,5 @@
 alembic==0.9.1
-appdirs==1.4.1
+appdirs
 argh==0.26.2
 attrs==16.3.0
 autobahn==0.17.1
@@ -12,6 +12,7 @@ constantly==15.1.0
 crossbar==16.10.1
 cryptography==1.7.2
 decorator==4.0.11
+Django==1.10.6
 django-environ==0.4.0
 enum34==1.1.6
 idna==2.2
@@ -48,6 +49,7 @@ shutilwhich==1.1.0
 six==1.10.0
 sortedcontainers==1.5.7
 SQLAlchemy==1.1.6
+sqlalchemy-migrate==0.11.0
 sqlparse==0.2.3
 Tempita==0.5.2
 treq==16.12.0
