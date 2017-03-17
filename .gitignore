@@ -1,0 +1,12 @@
+venv
+history_for_print.txt
+.DS_Store
+stderr.txt
+stdout.txt
+.idea/
+idea/
+.env
+*.pyc
+*.cache
+*.pid
+*.log
