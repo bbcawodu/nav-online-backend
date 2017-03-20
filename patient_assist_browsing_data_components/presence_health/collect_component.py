@@ -13,48 +13,6 @@ from db_models import PresenceBrowsingData
 BROWSING_KEYWORDS = ['oncology']
 
 
-def check_browsing_data_for_args(browsing_data):
-    """
-
-    :param browsing_data:
-    :return:
-    """
-    try:
-        cookie_user_id = browsing_data['cookie_id']
-        if not isinstance(cookie_user_id, int):
-            raise Exception("'cookie_id' must be an integer.")
-    except KeyError:
-        raise Exception("'cookie_id' key is not present in browsing data JSON object.")
-
-    try:
-        browsing_keyword = browsing_data['keyword']
-        if not isinstance(browsing_keyword, unicode):
-            raise Exception("'keyword' must be a string.")
-        if browsing_keyword not in BROWSING_KEYWORDS:
-            raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(BROWSING_KEYWORDS)))
-    except KeyError:
-        raise Exception("'keyword' key is not present in browsing data JSON object.")
-
-    try:
-        keyword_clicks = browsing_data['keyword_clicks']
-        if not isinstance(keyword_clicks, int):
-            raise Exception("'keyword_clicks' must be an integer.")
-        if keyword_clicks < 0:
-            raise Exception("'keyword_clicks' must be an positive.")
-    except KeyError:
-        raise Exception("'keyword_clicks' key is not present in browsing data JSON object.")
-    try:
-        keyword_hover_time = browsing_data['keyword_hover_time']
-        if not isinstance(keyword_hover_time, float):
-            raise Exception("'keyword_hover_time' must be a floating point.")
-        if keyword_hover_time < 0:
-            raise Exception("'keyword_hover_time' must be positive")
-    except KeyError:
-        raise Exception("'keyword_hover_time' key is not present in browsing data JSON object.")
-
-    return cookie_user_id, browsing_keyword, keyword_clicks, keyword_hover_time
-
-
 class PresenceCollectComponent(ApplicationSession):
     """
     An application component that collects browsing data for users of the Presence Health Website
@@ -141,41 +99,136 @@ class PresenceCollectComponent(ApplicationSession):
             oncology_hover_time: (type: Float) Total amount of time corresponding to the 'oncology' keyword
         """
 
-        if len(args) != 1:
-            raise Exception("'patient_assist_backend.submit_browsing_data_presence_health' accepts exactly 1 argument, browsing data.")
-        browsing_data_json = args[0]
-        # parse arguments for validity before processing
-        if not isinstance(browsing_data_json, unicode):
-            raise Exception("browsing data must be a unicode object. It is {}".format(type(browsing_data_json)))
-        try:
-            browsing_data_raw = json.loads(browsing_data_json)
-        except ValueError:
-            print("Decoding browsing data JSON has failed")
-            raise Exception("Decoding browsing data JSON has failed")
+        browsing_data_json = check_args_for_browsing_data(args)
+
+        browsing_data_raw = decode_json_arg(browsing_data_json)
+
+        cookie_user_id, browsing_keyword, keyword_clicks, keyword_hover_time = check_browsing_data_for_args(browsing_data_raw)
+
+        browsing_data_entry = yield find_presence_health_db_entry_from_cookie_id(cookie_user_id)
+
+        browsing_data_entry = yield update_presence_health_db_entry(browsing_data_entry, browsing_keyword, keyword_clicks, keyword_hover_time)
+
+        returnValue(CallResult(id=browsing_data_entry.id, cookie_id=browsing_data_entry.cookie_id, oncology_clicks=browsing_data_entry.oncology_clicks, oncology_hover_time=browsing_data_entry.oncology_hover_time))
+
+
+def check_args_for_browsing_data(args):
+    """
+
+    :param args:
+    :return:
+    """
+
+    if len(args) != 1:
+        raise Exception(
+            "'patient_assist_backend.submit_browsing_data_presence_health' accepts exactly 1 argument, browsing data.")
+    browsing_data_json = args[0]
+    # parse arguments for validity before processing
+    if not isinstance(browsing_data_json, unicode):
+        raise Exception("browsing data must be a unicode object. It is {}".format(type(browsing_data_json)))
+
+    return browsing_data_json
+
+
+def decode_json_arg(json_arg):
+    """
+
+    :param json_arg:
+    :return:
+    """
+
+    try:
+        return json.loads(json_arg)
+    except ValueError:
+        print("Decoding JSON argument has failed")
+        raise Exception("Decoding JSON argument has failed")
+
+
+def check_browsing_data_for_args(browsing_data):
+    """
+
+    :param browsing_data:
+    :return:
+    """
+
+    try:
+        cookie_user_id = browsing_data['cookie_id']
+        if not isinstance(cookie_user_id, unicode):
+            raise Exception("'cookie_id' must be unicode.")
+    except KeyError:
+        raise Exception("'cookie_id' key is not present in browsing data JSON object.")
+
+    try:
+        browsing_keyword = browsing_data['keyword']
+        if not isinstance(browsing_keyword, unicode):
+            raise Exception("'keyword' must be a string.")
+        if browsing_keyword not in BROWSING_KEYWORDS:
+            raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(BROWSING_KEYWORDS)))
+    except KeyError:
+        raise Exception("'keyword' key is not present in browsing data JSON object.")
+
+    try:
+        keyword_clicks = browsing_data['keyword_clicks']
+        if not isinstance(keyword_clicks, int):
+            raise Exception("'keyword_clicks' must be an integer.")
+        if keyword_clicks < 0:
+            raise Exception("'keyword_clicks' must be an positive.")
+    except KeyError:
+        raise Exception("'keyword_clicks' key is not present in browsing data JSON object.")
+    try:
+        keyword_hover_time = browsing_data['keyword_hover_time']
+        if not isinstance(keyword_hover_time, float):
+            raise Exception("'keyword_hover_time' must be a floating point.")
+        if keyword_hover_time < 0:
+            raise Exception("'keyword_hover_time' must be positive")
+    except KeyError:
+        raise Exception("'keyword_hover_time' key is not present in browsing data JSON object.")
+
+    return cookie_user_id, browsing_keyword, keyword_clicks, keyword_hover_time
+
+
+@inlineCallbacks
+def find_presence_health_db_entry_from_cookie_id(cookie_user_id):
+    """
+
+    :param cookie_user_id:
+    :return:
+    """
+
+    browsing_data_entry = yield PresenceBrowsingData.findBy(cookie_id=cookie_user_id)
+    if not browsing_data_entry:
+        raise Exception("No Presence Health Browsing data entry found for cookie_id: {}".format(cookie_user_id))
+    elif len(browsing_data_entry) > 1:
+        raise Exception(
+            "More than one Presence Health Browsing data entry found for cookie_id: {}".format(cookie_user_id))
+    else:
+        returnValue(browsing_data_entry[0])
+
+
+@inlineCallbacks
+def update_presence_health_db_entry(browsing_data_entry, browsing_keyword, keyword_clicks, keyword_hover_time):
+    """
+
+    :param browsing_data_entry:
+    :param browsing_keyword:
+    :param keyword_clicks:
+    :param keyword_hover_time:
+    :return:
+    """
+
+    if browsing_keyword == 'oncology':
+        if browsing_data_entry.oncology_clicks is None:
+            browsing_data_entry.oncology_clicks = keyword_clicks
         else:
-            cookie_user_id, browsing_keyword, keyword_clicks, keyword_hover_time = check_browsing_data_for_args(browsing_data_raw)
+            browsing_data_entry.oncology_clicks += keyword_clicks
 
-            # Query database for presence health browsing data based on given cookie_id
-            browsing_data_entry = yield PresenceBrowsingData.findBy(cookie_id=str(cookie_user_id))
-            if not browsing_data_entry:
-                raise Exception("No Presence Health Browsing data entry found for cookie_id: {}".format(cookie_user_id))
-            elif len(browsing_data_entry) > 1:
-                raise Exception(
-                    "More than one Presence Health Browsing data entry found for cookie_id: {}".format(cookie_user_id))
-            else:
-                browsing_data_entry = browsing_data_entry[0]
+        if browsing_data_entry.oncology_hover_time is None:
+            browsing_data_entry.oncology_hover_time = keyword_hover_time
+        else:
+            browsing_data_entry.oncology_hover_time += keyword_hover_time
+    else:
+        raise Exception("No valid browsing data keywords present.")
 
-        if browsing_data_entry:
-            if browsing_keyword == 'oncology':
-                if browsing_data_entry.oncology_clicks is None:
-                    browsing_data_entry.oncology_clicks = keyword_clicks
-                else:
-                    browsing_data_entry.oncology_clicks += keyword_clicks
+    browsing_data_entry = yield browsing_data_entry.save()
 
-                if browsing_data_entry.oncology_hover_time is None:
-                    browsing_data_entry.oncology_hover_time = keyword_hover_time
-                else:
-                    browsing_data_entry.oncology_hover_time = keyword_hover_time
-
-                browsing_data_entry = yield browsing_data_entry.save()
-            returnValue(CallResult(id=browsing_data_entry.id, cookie_id=browsing_data_entry.cookie_id, oncology_clicks=browsing_data_entry.oncology_clicks, oncology_hover_time=browsing_data_entry.oncology_hover_time))
+    returnValue(browsing_data_entry)
