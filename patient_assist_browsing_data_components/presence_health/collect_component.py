@@ -8,6 +8,7 @@ from twisted.internet.defer import returnValue
 from autobahn.twisted.wamp import ApplicationSession
 from patient_assist_browsing_data_components import PARSED_DB_URL
 from db_models import PresenceBrowsingData
+from utils import find_presence_health_db_entry_from_cookie_id
 
 
 BROWSING_KEYWORDS = ['oncology']
@@ -20,7 +21,7 @@ class PresenceCollectComponent(ApplicationSession):
 
     @inlineCallbacks
     def onJoin(self, details):
-        print("session attached")
+        print("PresenceCollectComponent attached")
 
         # create a new database connection pool. connections are created lazy (as needed)
         def onPoolConnectionCreated(conn):
@@ -45,16 +46,16 @@ class PresenceCollectComponent(ApplicationSession):
         try:
             yield self.register(self.create_browsing_data_instance, u'patient_assist_backend.presence_health.create_browsing_data_instance')
         except Exception as e:
-            print("failed to register 'create_browsing_data_instance_presence_health' procedure: {}".format(e))
+            print("failed to register 'patient_assist_backend.presence_health.create_browsing_data_instance' procedure: {}".format(e))
         else:
-            print("'create_browsing_data_instance_presence_health' procedure registered")
+            print("'patient_assist_backend.presence_health.create_browsing_data_instance' procedure registered")
 
         try:
             yield self.register(self.submit_browsing_data, u'patient_assist_backend.presence_health.submit_browsing_data')
         except Exception as e:
-            print("failed to register 'submit_browsing_data_presence_health' procedure: {}".format(e))
+            print("failed to register 'patient_assist_backend.presence_health.submit_browsing_data' procedure: {}".format(e))
         else:
-            print("'submit_browsing_data_presence_health' procedure registered")
+            print("'patient_assist_backend.presence_health.submit_browsing_data' procedure registered")
 
     @inlineCallbacks
     def create_browsing_data_instance(self):
@@ -72,6 +73,7 @@ class PresenceCollectComponent(ApplicationSession):
         presence_data_instance = PresenceBrowsingData()
         presence_data_instance = yield presence_data_instance.save()
         presence_data_instance.cookie_id = str(presence_data_instance.id)
+        presence_data_instance.send_cta_updates = False
         presence_data_instance.oncology_clicks = 0
         presence_data_instance.oncology_hover_time = 0.0
         presence_data_instance = yield presence_data_instance.save()
@@ -124,8 +126,8 @@ def check_args_for_browsing_data(args):
             "'patient_assist_backend.submit_browsing_data_presence_health' accepts exactly 1 argument, browsing data.")
     browsing_data_json = args[0]
     # parse arguments for validity before processing
-    if not isinstance(browsing_data_json, unicode):
-        raise Exception("browsing data must be a unicode object. It is {}".format(type(browsing_data_json)))
+    if not isinstance(browsing_data_json, unicode) and not isinstance(browsing_data_json, str):
+        raise Exception("browsing data must be a unicode or string object. It is {}".format(type(browsing_data_json)))
 
     return browsing_data_json
 
@@ -153,15 +155,15 @@ def check_browsing_data_for_args(browsing_data):
 
     try:
         cookie_user_id = browsing_data['cookie_id']
-        if not isinstance(cookie_user_id, unicode):
-            raise Exception("'cookie_id' must be unicode.")
+        if not isinstance(cookie_user_id, unicode) and not isinstance(cookie_user_id, str):
+            raise Exception("'cookie_id' must be a unicode or string object.")
     except KeyError:
         raise Exception("'cookie_id' key is not present in browsing data JSON object.")
 
     try:
         browsing_keyword = browsing_data['keyword']
-        if not isinstance(browsing_keyword, unicode):
-            raise Exception("'keyword' must be a string.")
+        if not isinstance(browsing_keyword, unicode) and not isinstance(browsing_keyword, str):
+            raise Exception("'keyword' must be a unicode or string object.")
         if browsing_keyword not in BROWSING_KEYWORDS:
             raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(BROWSING_KEYWORDS)))
     except KeyError:
@@ -185,24 +187,6 @@ def check_browsing_data_for_args(browsing_data):
         raise Exception("'keyword_hover_time' key is not present in browsing data JSON object.")
 
     return cookie_user_id, browsing_keyword, keyword_clicks, keyword_hover_time
-
-
-@inlineCallbacks
-def find_presence_health_db_entry_from_cookie_id(cookie_user_id):
-    """
-
-    :param cookie_user_id:
-    :return:
-    """
-
-    browsing_data_entry = yield PresenceBrowsingData.findBy(cookie_id=cookie_user_id)
-    if not browsing_data_entry:
-        raise Exception("No Presence Health Browsing data entry found for cookie_id: {}".format(cookie_user_id))
-    elif len(browsing_data_entry) > 1:
-        raise Exception(
-            "More than one Presence Health Browsing data entry found for cookie_id: {}".format(cookie_user_id))
-    else:
-        returnValue(browsing_data_entry[0])
 
 
 @inlineCallbacks

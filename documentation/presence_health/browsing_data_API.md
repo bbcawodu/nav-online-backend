@@ -81,13 +81,13 @@
             
     Possible Errors:
     'patient_assist_backend.submit_browsing_data_presence_health' accepts exactly 1 argument, browsing data.
-    browsing data must be a unicode object.
+    browsing data must be a unicode objector string object.
     Decoding browsing data JSON has failed
     No Presence Health Browsing data entry found for cookie_id
     More than one Presence Health Browsing data entry found for cookie_id
-    'cookie_id' must be an integer.
+    'cookie_id' must be a unicode or string object
     'cookie_id' key is not present in browsing data JSON object.
-    'keyword' must be a string.
+    'keyword' must be a unicode or string object.
     'keyword' must be in the following list of accepted keywords: ['oncology', etc.]
     'keyword' key is not present in browsing data JSON object.
     'keyword_clicks' must be an integer.
@@ -150,3 +150,154 @@
        </body>
     </html>
     ```
+
+### Procedure: Enable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.enable_cta_updates)
+    ```
+    This procedure takes a given cookie_id corresponding to a presence health browsing data db row and sets its
+    send_cta_updates value to True. When a given browsing data's instance is set to True, it will publish the URL
+    for the most updated CTA for a given browsing data instance at uri 
+    'patient_assist_backend.presence_health.new_ctas.<cookie_id>'.
+    
+    Procedure uri: 'patient_assist_backend.presence_health.enable_cta_updates'
+    
+    :param args: Argument list. Accepts only one argument
+                 [cookie_id]
+                 cookie_id: (type: String) Cookie id of presence health browsing data.
+    :return: Returns keywords results that are accessible through the results' kwargs property.
+            id: (type: Integer) Database id of newly created presence health browsing data row
+            cookie_id: (type: String) Cookie id of newly created presence health browsing data row
+            sending_browsing_data: (type: Boolean) Whether or not updated CTA's are being published for this entry.
+            
+    Possible Errors:
+    function accepts exactly 1 positional argument, cookie_id.
+    cookie_id must be a unicode or string object
+    No Presence Health Browsing data entry found for cookie_id
+    More than one Presence Health Browsing data entry found for cookie_id
+    
+    ```
+
+- Example Javascript Call
+    ```
+    <!DOCTYPE html>
+    <html>
+       <body>
+          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+          <p>Open JavaScript console to watch output.</p>
+          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+          <script>
+          try {
+               var autobahn = require('autobahn');
+               var when = require('when');
+            } catch (e) {
+               // When running in browser, AutobahnJS will
+               // be included without a module system
+               var when = autobahn.when;
+            }
+            
+            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+            var connection = new autobahn.Connection({
+                               url: wsuri,
+                               realm: 'patient_assist_realm'}
+                            );
+                            
+            connection.onopen = function (session) {
+               var dl = [];
+            
+               dl.push(session.call('patient_assist_backend.presence_health.enable_cta_updates', [cookie_id]).then(
+                  function (res) {
+                     console.log("Result: Cookie ID:" + res.kwargs.cookie_id + ", Sending Browsing Data?: " + res.kwargs.sending_browsing_data);
+                  },
+                  function (err) {
+                     console.log("Error:", err.error, err.args, err.kwargs);
+                  }
+               ));
+            
+               when.all(dl).then(function () {
+                  console.log("All finished.");
+                  connection.close();
+               });
+            };
+            
+            connection.open();
+          </script>
+       </body>
+    </html>
+    ```
+
+### Procedure: Disable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.disable_cta_updates)
+    ```
+    This procedure takes a given cookie_id corresponding to a presence health browsing data db row and sets its
+    send_cta_updates value to True. When a given browsing data's instance is set to False, it will NOT publish the URL
+    for the most updated CTA until set back to True.
+    
+    Procedure uri: 'patient_assist_backend.presence_health.disable_cta_updates'
+    
+    :param args: Argument list. Accepts only one argument
+                 [cookie_id]
+                 cookie_id: (type: String) Cookie id of presence health browsing data.
+    :return: Returns keywords results that are accessible through the results' kwargs property.
+            id: (type: Integer) Database id of newly created presence health browsing data row
+            cookie_id: (type: String) Cookie id of newly created presence health browsing data row
+            sending_browsing_data: (type: Boolean) Whether or not updated CTA's are being published for this entry.
+            
+    Possible Errors:
+    function accepts exactly 1 positional argument, cookie_id.
+    cookie_id must be a unicode or string object
+    No Presence Health Browsing data entry found for cookie_id
+    More than one Presence Health Browsing data entry found for cookie_id
+    
+    ```
+
+- Example Javascript Call
+    ```
+    <!DOCTYPE html>
+    <html>
+       <body>
+          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+          <p>Open JavaScript console to watch output.</p>
+          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+          <script>
+          try {
+               var autobahn = require('autobahn');
+               var when = require('when');
+            } catch (e) {
+               // When running in browser, AutobahnJS will
+               // be included without a module system
+               var when = autobahn.when;
+            }
+            
+            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+            var connection = new autobahn.Connection({
+                               url: wsuri,
+                               realm: 'patient_assist_realm'}
+                            );
+                            
+            connection.onopen = function (session) {
+               var dl = [];
+            
+               dl.push(session.call('patient_assist_backend.presence_health.disable_cta_updates', [cookie_id]).then(
+                  function (res) {
+                     console.log("Result: Cookie ID:" + res.kwargs.cookie_id + ", Sending Browsing Data?: " + res.kwargs.sending_browsing_data);
+                  },
+                  function (err) {
+                     console.log("Error:", err.error, err.args, err.kwargs);
+                  }
+               ));
+            
+               when.all(dl).then(function () {
+                  console.log("All finished.");
+                  connection.close();
+               });
+            };
+            
+            connection.open();
+          </script>
+       </body>
+    </html>
+    ```
+    
+### Updated CTA WAMP Subscription Topic (URI: patient_assist_backend.presence_health.new_ctas.<cookie_id>)
+### IN DEVELOPMENT
+
+- When you subscribe to this topic, the url for the most updated CTA will be published iff the sending_cta_updates value
+  for the db entry of the corresponding cookie_id is set to TRUE
