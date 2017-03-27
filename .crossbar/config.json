@@ -72,6 +72,14 @@
                     "paths": {
                         "/": {
                             "type": "static",
+                            "directory": "../index"
+                        },
+                        "staticfiles": {
+                            "type": "static",
+                            "directory": "../staticfiles"
+                        },
+                        "web": {
+                            "type": "static",
                             "directory": "../web"
                         },
                         "ws": {

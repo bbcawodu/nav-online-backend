@@ -3,6 +3,8 @@ from twisted.internet.defer import inlineCallbacks
 from db_models import PresenceBrowsingData
 from twisted.internet.defer import returnValue
 
+BROWSING_KEYWORDS = ['oncology']
+
 
 @inlineCallbacks
 def find_presence_health_db_entry_from_cookie_id(cookie_user_id):

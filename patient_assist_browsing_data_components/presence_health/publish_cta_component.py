@@ -1,5 +1,4 @@
 from __future__ import print_function
-import json
 from twisted.internet.defer import inlineCallbacks
 from twisted.enterprise import adbapi
 from twistar.registry import Registry
@@ -10,6 +9,7 @@ from autobahn.twisted.util import sleep
 from patient_assist_browsing_data_components import PARSED_DB_URL
 from db_models import PresenceBrowsingData
 from utils import find_presence_health_db_entry_from_cookie_id
+from utils import BROWSING_KEYWORDS
 
 
 class PublishPresenceCTASComponent(ApplicationSession):
@@ -62,7 +62,7 @@ class PublishPresenceCTASComponent(ApplicationSession):
 
             for browsing_data_entry in browsing_data_entries:
                 # find appropriate cta based on browsing data and publish to topic
-                cta = retrieve_cta_based_on_browsing_data(browsing_data_entry)
+                # cta = retrieve_cta_based_on_browsing_data(browsing_data_entry)
 
                 self.publish(u'patient_assist_backend.presence_health.new_ctas.{}'.format(browsing_data_entry.cookie_id),
                              oncology_clicks=browsing_data_entry.oncology_clicks,

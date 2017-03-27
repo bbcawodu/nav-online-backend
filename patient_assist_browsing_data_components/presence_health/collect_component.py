@@ -9,9 +9,7 @@ from autobahn.twisted.wamp import ApplicationSession
 from patient_assist_browsing_data_components import PARSED_DB_URL
 from db_models import PresenceBrowsingData
 from utils import find_presence_health_db_entry_from_cookie_id
-
-
-BROWSING_KEYWORDS = ['oncology']
+from utils import BROWSING_KEYWORDS
 
 
 class PresenceCollectComponent(ApplicationSession):
