@@ -78,7 +78,7 @@ connection.onopen = function (session) {
     );
 
    function onevent1(args, kwargs) {
-      console.log("Result: clicks:" + kwargs.oncology_clicks + ", hover time: " + kwargs.oncology_hover_time);
+      console.log("Result: call to action url:" + kwargs.cta_url);
    }
 
    var sub_url = 'patient_assist_backend.presence_health.new_ctas.' + cookie_id;

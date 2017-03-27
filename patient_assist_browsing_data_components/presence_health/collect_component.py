@@ -7,9 +7,9 @@ from autobahn.wamp.types import CallResult
 from twisted.internet.defer import returnValue
 from autobahn.twisted.wamp import ApplicationSession
 from patient_assist_browsing_data_components import PARSED_DB_URL
-from db_models import PresenceBrowsingData
+from twistar_db_models import PresenceBrowsingData
 from utils import find_presence_health_db_entry_from_cookie_id
-from utils import BROWSING_KEYWORDS
+from patient_assist_db_models import BROWSING_KEYWORDS
 
 
 class PresenceCollectComponent(ApplicationSession):
@@ -70,10 +70,13 @@ class PresenceCollectComponent(ApplicationSession):
 
         presence_data_instance = PresenceBrowsingData()
         presence_data_instance = yield presence_data_instance.save()
+
         presence_data_instance.cookie_id = str(presence_data_instance.id)
         presence_data_instance.send_cta_updates = False
-        presence_data_instance.oncology_clicks = 0
-        presence_data_instance.oncology_hover_time = 0.0
+        for browsing_keyword in BROWSING_KEYWORDS:
+            setattr(presence_data_instance, "{}_{}".format(browsing_keyword, "clicks"), 0)
+            setattr(presence_data_instance, "{}_{}".format(browsing_keyword, "hover_time"), 0.0)
+
         presence_data_instance = yield presence_data_instance.save()
 
         returnValue(CallResult(id=presence_data_instance.id, cookie_id=presence_data_instance.cookie_id))
@@ -198,18 +201,23 @@ def update_presence_health_db_entry(browsing_data_entry, browsing_keyword, keywo
     :return:
     """
 
-    if browsing_keyword == 'oncology':
-        if browsing_data_entry.oncology_clicks is None:
-            browsing_data_entry.oncology_clicks = keyword_clicks
-        else:
-            browsing_data_entry.oncology_clicks += keyword_clicks
-
-        if browsing_data_entry.oncology_hover_time is None:
-            browsing_data_entry.oncology_hover_time = keyword_hover_time
-        else:
-            browsing_data_entry.oncology_hover_time += keyword_hover_time
+    if browsing_keyword not in BROWSING_KEYWORDS:
+        raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(BROWSING_KEYWORDS)))
     else:
-        raise Exception("No valid browsing data keywords present.")
+        clicks_field_name = "{}_{}".format(browsing_keyword, "clicks")
+        entry_clicks_value = getattr(browsing_data_entry, clicks_field_name)
+        hover_time_field_name = "{}_{}".format(browsing_keyword, "hover_time")
+        entry_hover_time_value = getattr(browsing_data_entry, hover_time_field_name)
+
+        if entry_clicks_value is None:
+            setattr(browsing_data_entry, keyword_clicks)
+        else:
+            setattr(browsing_data_entry, entry_clicks_value+keyword_clicks)
+
+        if entry_hover_time_value is None:
+            setattr(browsing_data_entry, keyword_hover_time)
+        else:
+            setattr(browsing_data_entry, entry_hover_time_value+keyword_hover_time)
 
     browsing_data_entry = yield browsing_data_entry.save()
 

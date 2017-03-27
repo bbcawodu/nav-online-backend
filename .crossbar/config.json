@@ -78,9 +78,9 @@
                             "type": "static",
                             "directory": "../staticfiles"
                         },
-                        "web": {
+                        "jsexamples": {
                             "type": "static",
-                            "directory": "../web"
+                            "directory": "../jsexamples"
                         },
                         "ws": {
                             "type": "websocket"

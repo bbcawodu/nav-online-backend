@@ -199,7 +199,9 @@
                                url: wsuri,
                                realm: 'patient_assist_realm'}
                             );
-                            
+               
+            var cookie_id = localStorage.getItem("pic_patient_assist_cookie_id");
+            
             connection.onopen = function (session) {
                var dl = [];
             
@@ -272,6 +274,8 @@
                                realm: 'patient_assist_realm'}
                             );
                             
+            var cookie_id = localStorage.getItem("pic_patient_assist_cookie_id");
+            
             connection.onopen = function (session) {
                var dl = [];
             
@@ -297,7 +301,59 @@
     ```
     
 ### Updated CTA WAMP Subscription Topic (URI: patient_assist_backend.presence_health.new_ctas.<cookie_id>)
-### IN DEVELOPMENT
 
-- When you subscribe to this topic, the url for the most updated CTA will be published iff the sending_cta_updates value
-  for the db entry of the corresponding cookie_id is set to TRUE
+- Current Algorithm:
+    - each intent keyword has an "intent index"= 10*(clicks) + hover time
+    - intent keyword with the highest non zero intent index is returned
+    - if no intent keywords have an "intent index">0, default cta is returned
+    
+- Alternate Algorithm (Returns intent keyword that fulfills first criteria applicable of the following list):
+    - intent keyword with the highest non zero clicks
+    - intent keyword with the highest non zero hover time
+    - if no intent keywords have non zero clicks or hover time, default cta is returned
+
+- When you subscribe to this topic, the url for the most updated CTA of the corresponding cookie_id will be published
+  iff the sending_cta_updates value is set to TRUE,
+  - When a subscription event is published, the result can be accessed through the keyword argument, cta_url
+  
+- Example Javascript call:
+    ```
+    <!DOCTYPE html>
+    <html>
+       <body>
+          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+          <p>Open JavaScript console to watch output.</p>
+          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+          <script>
+          try {
+               var autobahn = require('autobahn');
+               var when = require('when');
+            } catch (e) {
+               // When running in browser, AutobahnJS will
+               // be included without a module system
+               var when = autobahn.when;
+            }
+            
+            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+            var connection = new autobahn.Connection({
+                               url: wsuri,
+                               realm: 'patient_assist_realm'}
+                            );
+               
+            var cookie_id = localStorage.getItem("pic_patient_assist_cookie_id");
+            
+            connection.onopen = function (session) {
+               function onevent1(args, kwargs) {
+                  console.log("Result: call to action url:" + kwargs.cta_url);
+               }
+            
+               var sub_url = 'patient_assist_backend.presence_health.new_ctas.' + cookie_id;
+               console.log(sub_url);
+               session.subscribe(sub_url, onevent1);
+            };
+            
+            connection.open();
+          </script>
+       </body>
+    </html>
+    ```

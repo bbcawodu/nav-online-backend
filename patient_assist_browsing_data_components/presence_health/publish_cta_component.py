@@ -7,9 +7,10 @@ from twisted.internet.defer import returnValue
 from autobahn.twisted.wamp import ApplicationSession
 from autobahn.twisted.util import sleep
 from patient_assist_browsing_data_components import PARSED_DB_URL
-from db_models import PresenceBrowsingData
+from twistar_db_models import PresenceBrowsingData
 from utils import find_presence_health_db_entry_from_cookie_id
-from utils import BROWSING_KEYWORDS
+from patient_assist_db_models import BROWSING_KEYWORDS
+from sys import maxint
 
 
 class PublishPresenceCTASComponent(ApplicationSession):
@@ -62,11 +63,10 @@ class PublishPresenceCTASComponent(ApplicationSession):
 
             for browsing_data_entry in browsing_data_entries:
                 # find appropriate cta based on browsing data and publish to topic
-                # cta = retrieve_cta_based_on_browsing_data(browsing_data_entry)
+                cta_url = retrieve_cta_based_on_browsing_data(browsing_data_entry)
 
                 self.publish(u'patient_assist_backend.presence_health.new_ctas.{}'.format(browsing_data_entry.cookie_id),
-                             oncology_clicks=browsing_data_entry.oncology_clicks,
-                             oncology_hover_time=browsing_data_entry.oncology_hover_time)
+                             cta_url=cta_url)
 
             yield sleep(2)
 
@@ -148,6 +148,43 @@ def check_args_for_cookie_id(args):
 
 
 def retrieve_cta_based_on_browsing_data(browsing_data_entry):
-    cta = None
+    cta_url = "https://picbackend.herokuapp.com/v2/cta/?intent="
 
-    return cta
+    keyword_data_list = []
+    max_intent_index_entry = {"keyword": None,
+                              "clicks": -maxint - 1,
+                              "hover_time": -maxint - 1,
+                              "intent_index": -maxint - 1}
+    max_clicks_entry = {"keyword": None,
+                        "clicks": -maxint-1,
+                        "hover_time": -maxint-1}
+    max_hover_time_entry = {"keyword": None,
+                            "clicks": -maxint - 1,
+                            "hover_time": -maxint - 1}
+
+    for keyword in BROWSING_KEYWORDS:
+        keyword_clicks = getattr(browsing_data_entry, "{}_{}".format(keyword, "clicks"))
+        keyword_hover_time = getattr(browsing_data_entry, "{}_{}".format(keyword, "hover_time"))
+        keyword_data_list_entry = {"keyword": keyword,
+                                   "clicks": keyword_clicks,
+                                   "hover_time": keyword_hover_time,
+                                   "intent_index": 10*keyword_clicks+keyword_hover_time}
+
+        max_clicks_entry = max(max_clicks_entry, keyword_data_list_entry, key=lambda entry: entry['clicks'])
+        max_hover_time_entry = max(max_hover_time_entry, keyword_data_list_entry, key=lambda entry: entry['hover_time'])
+        max_intent_index_entry = max(max_intent_index_entry, keyword_data_list_entry, key=lambda entry: entry['intent_index'])
+        keyword_data_list.append(keyword_data_list_entry)
+
+    if max_hover_time_entry["intent_index"] > 0:
+        cta_url += max_clicks_entry["keyword"]
+    else:
+        cta_url += "default"
+
+    # if max_clicks_entry["clicks"] > 0:
+    #     cta_url += max_clicks_entry["keyword"]
+    # elif max_hover_time_entry["hover_time"] > 0:
+    #     cta_url += max_clicks_entry["keyword"]
+    # else:
+    #     cta_url += "default"
+
+    return cta_url
