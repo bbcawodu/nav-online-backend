@@ -1,5 +1,6 @@
 ## Presence Health Browsing Data API README
-  
+## Current list of intent keywords: http://picbackend.herokuapp.com/v2/cta/?intent=all
+
 ### Procedure: Create Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.create_browsing_data_instance)
     ```
     This procedure creates a new presence health browsing data db entry and returns the db id and cookie_id of the

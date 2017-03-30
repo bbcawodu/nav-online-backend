@@ -123,6 +123,15 @@ class PublishPresenceCTASComponent(ApplicationSession):
 
 @inlineCallbacks
 def retrieve_presence_db_entry_from_args(args):
+    """
+    This function takes an argument list containing one argument, cookie_id, parses it for errors, and returns a
+    twistar instance of the presence health browsing data table
+
+    :param args: Argument list. Accepts only one argument
+                 [cookie_id]
+                 cookie_id: (type: String) Cookie id of presence health browsing data instance.
+    :return:
+    """
     cookie_id = check_args_for_cookie_id(args)
 
     browsing_data_entry = yield find_presence_health_db_entry_from_cookie_id(cookie_id)
@@ -132,8 +141,12 @@ def retrieve_presence_db_entry_from_args(args):
 
 def check_args_for_cookie_id(args):
     """
+    This function takes an argument list containing one argument, cookie_id, parses it for errors, and returns the
+    cookie_id
 
-    :param args:
+    :param args: Argument list. Accepts only one argument
+                 [cookie_id]
+                 cookie_id: (type: String) Cookie id of presence health browsing data instance.
     :return:
     """
 
@@ -148,6 +161,16 @@ def check_args_for_cookie_id(args):
 
 
 def retrieve_cta_based_on_browsing_data(browsing_data_entry):
+    """
+    This function takes a twistar instance of the presence health browsing data table, calculates the appropriate call
+    to action from the browsing data, and returns an HTTP url that contains information about the corresponding CTA
+    in the JSON formatted BODY.
+
+    :param browsing_data_entry: (type: twistar PresenceBrowsingData instance) Browsing data instance to retrieve browsing
+                                data from
+    :return:
+    """
+
     cta_url = "https://picbackend.herokuapp.com/v2/cta/?intent="
 
     keyword_data_list = []
