@@ -117,9 +117,13 @@ class PresenceCollectComponent(ApplicationSession):
 
 def check_args_for_browsing_data(args):
     """
+    This function takes an argument list containing one argument, browsing_data, parses it for errors, and returns the
+    JSON object retrieved from the argument list.
 
-    :param args:
-    :return:
+    :param args: Argument list. Accepts only one argument
+                 [browsing_data]
+                 browsing_data: (type: Unicode or String) JSON object that contains submitted browsing data.
+    :return: (type: Unicode or String) JSON object that contains submitted browsing data.
     """
 
     if len(args) != 1:
@@ -135,9 +139,11 @@ def check_args_for_browsing_data(args):
 
 def decode_json_arg(json_arg):
     """
+    This function takes a JSON formatted String or Unicode object, parses it for errors, transforms it into a python
+    object, and finally returns the decoded object.
 
-    :param json_arg:
-    :return:
+    :param json_arg: (type: Unicode or String) JSON object for decoding.
+    :return: (type: Dictionary) Dictionary object that contains submitted browsing data.
     """
 
     try:
@@ -149,9 +155,15 @@ def decode_json_arg(json_arg):
 
 def check_browsing_data_for_args(browsing_data):
     """
+    This function takes a dictionary, parses it for parameters that are used for submitting browsing data and returns
+    any errors. Finally, the function returns an argument list containing any relevant browsing data.
 
-    :param browsing_data:
-    :return:
+    :param browsing_data: (type: Dictionary) Dictionary object that contains submitted browsing data.
+    :return: Argument List: [cookie_user_id, browsing_keyword, keyword_clicks, keyword_hover_time]
+             cookie_user_id: (type: String or Unicode) Cookie id of presence health browsing data instance.
+             browsing_keyword: (type: String or Unicode) Browsing data keyword to update
+             keyword_clicks: (type: Integer) Number of clicks for corresponding keyword
+             keyword_hover_time: (type: Float) Amount of time, in seconds, of hover time for corresponding keyword
     """
 
     try:
@@ -193,12 +205,14 @@ def check_browsing_data_for_args(browsing_data):
 @inlineCallbacks
 def update_presence_health_db_entry(browsing_data_entry, browsing_keyword, keyword_clicks, keyword_hover_time):
     """
+    This function takes a presence browsing data twistar instance and submitted browsing data as arguments and uses
+    the submitted data to update and save the twistar instance. The updated instance is returned
 
-    :param browsing_data_entry:
-    :param browsing_keyword:
-    :param keyword_clicks:
-    :param keyword_hover_time:
-    :return:
+    :param browsing_data_entry: (type: twistar PresenceBrowsingData instance) Presence Browsing Data instance
+    :param browsing_keyword: (type: String or Unicode) Browsing data keyword to update
+    :param keyword_clicks: (type: Integer) Number of clicks for corresponding keyword
+    :param keyword_hover_time: (type: Float) Amount of time, in seconds, of hover time for corresponding keyword
+    :return: (type: twistar PresenceBrowsingData instance) Updated Presence Browsing Data instance
     """
 
     if browsing_keyword not in BROWSING_KEYWORDS:

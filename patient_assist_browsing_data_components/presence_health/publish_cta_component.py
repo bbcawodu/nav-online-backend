@@ -130,7 +130,7 @@ def retrieve_presence_db_entry_from_args(args):
     :param args: Argument list. Accepts only one argument
                  [cookie_id]
                  cookie_id: (type: String) Cookie id of presence health browsing data instance.
-    :return:
+    :return: (type: twistar PresenceBrowsingData instance) Presence Browsing Data instance
     """
     cookie_id = check_args_for_cookie_id(args)
 
@@ -147,7 +147,7 @@ def check_args_for_cookie_id(args):
     :param args: Argument list. Accepts only one argument
                  [cookie_id]
                  cookie_id: (type: String) Cookie id of presence health browsing data instance.
-    :return:
+    :return: (type: String) Cookie id of presence health browsing data instance.
     """
 
     if len(args) != 1:
@@ -168,7 +168,7 @@ def retrieve_cta_based_on_browsing_data(browsing_data_entry):
 
     :param browsing_data_entry: (type: twistar PresenceBrowsingData instance) Browsing data instance to retrieve browsing
                                 data from
-    :return:
+    :return: (type: String) HTTP URL to access CTA info.
     """
 
     cta_url = "https://picbackend.herokuapp.com/v2/cta/?intent="
