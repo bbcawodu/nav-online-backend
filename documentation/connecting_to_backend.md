@@ -7,3 +7,8 @@
   - Autobahn|JS: http://autobahn.ws/js/
 - Once you have chosen a library and a programming language, you can connect to the components of the backing using the
   Websocket uri, "ws://patient-assist-backend.herokuapp.com/ws". All components are in the realm, "patient_assist_realm."
+  
+  
+### Viewing Patient Assist Backend Browsing Data
+- To access an in browser, dashboard view of the stored browsing data on the Patient Assist Backend, visit
+  "http://patient-assist-backend.herokuapp.com/admin"

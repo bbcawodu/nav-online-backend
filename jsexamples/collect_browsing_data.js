@@ -23,7 +23,7 @@ var connection = new autobahn.Connection({
 );
 console.log(wsuri);
 
-// var cookie_id = localStorage.removeItem("pic_patient_assist_cookie_id");
+// localStorage.removeItem("pic_patient_assist_cookie_id");
 var cookie_id = localStorage.getItem("pic_patient_assist_cookie_id");
 
 connection.onopen = function (session) {
@@ -39,28 +39,28 @@ connection.onopen = function (session) {
    // }
    //
    // else{
-   //     // var browsing_data_obj = {"cookie_id": cookie_id,
-   //     //                       "keyword": "oncology",
-   //     //                       "keyword_clicks": 2,
-   //     //                       "keyword_hover_time": 3.2};
-   //     //
-   //     // dl.push(session.call('patient_assist_backend.presence_health.submit_browsing_data', [JSON.stringify(browsing_data_obj)]).then(
-   //     //    function (res) {
-   //     //       console.log("Result: clicks:" + res.kwargs.oncology_clicks + ", hover time: " + res.kwargs.oncology_hover_time);
-   //     //    },
-   //     //    function (err) {
-   //     //       console.log("Error:", err.error, err.args, err.kwargs);
-   //     //    }
-   //     // ));
+   //     var browsing_data_obj = {"cookie_id": cookie_id,
+   //                           "keyword": "oncology",
+   //                           "keyword_clicks": 2,
+   //                           "keyword_hover_time": 3.2};
    //
-   //     dl.push(session.call('patient_assist_backend.presence_health.disable_cta_updates', [cookie_id]).then(
+   //     dl.push(session.call('patient_assist_backend.presence_health.submit_browsing_data', [JSON.stringify(browsing_data_obj)]).then(
    //        function (res) {
-   //           console.log("Result: Cookie ID:" + res.kwargs.cookie_id + ", Sending Browsing Data?: " + res.kwargs.sending_browsing_data);
+   //           console.log("Result: clicks:" + res.kwargs.oncology_clicks + ", hover time: " + res.kwargs.oncology_hover_time);
    //        },
    //        function (err) {
    //           console.log("Error:", err.error, err.args, err.kwargs);
    //        }
    //     ));
+   //
+   //     // dl.push(session.call('patient_assist_backend.presence_health.disable_cta_updates', [cookie_id]).then(
+   //     //    function (res) {
+   //     //       console.log("Result: Cookie ID:" + res.kwargs.cookie_id + ", Sending Browsing Data?: " + res.kwargs.sending_browsing_data);
+   //     //    },
+   //     //    function (err) {
+   //     //       console.log("Error:", err.error, err.args, err.kwargs);
+   //     //    }
+   //     // ));
    // }
    //
    // when.all(dl).then(function () {

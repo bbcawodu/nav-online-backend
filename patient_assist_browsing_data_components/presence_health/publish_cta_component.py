@@ -173,35 +173,35 @@ def retrieve_cta_based_on_browsing_data(browsing_data_entry):
 
     cta_url = "https://picbackend.herokuapp.com/v2/cta/?intent="
 
-    keyword_data_list = []
-    max_intent_index_entry = {"keyword": None,
-                              "clicks": -maxint - 1,
-                              "hover_time": -maxint - 1,
-                              "intent_index": -maxint - 1}
-    max_clicks_entry = {"keyword": None,
-                        "clicks": -maxint-1,
-                        "hover_time": -maxint-1}
-    max_hover_time_entry = {"keyword": None,
-                            "clicks": -maxint - 1,
-                            "hover_time": -maxint - 1}
-
-    for keyword in BROWSING_KEYWORDS:
-        keyword_clicks = getattr(browsing_data_entry, "{}_{}".format(keyword, "clicks"))
-        keyword_hover_time = getattr(browsing_data_entry, "{}_{}".format(keyword, "hover_time"))
-        keyword_data_list_entry = {"keyword": keyword,
-                                   "clicks": keyword_clicks,
-                                   "hover_time": keyword_hover_time,
-                                   "intent_index": 10*keyword_clicks+keyword_hover_time}
-
-        max_clicks_entry = max(max_clicks_entry, keyword_data_list_entry, key=lambda entry: entry['clicks'])
-        max_hover_time_entry = max(max_hover_time_entry, keyword_data_list_entry, key=lambda entry: entry['hover_time'])
-        max_intent_index_entry = max(max_intent_index_entry, keyword_data_list_entry, key=lambda entry: entry['intent_index'])
-        keyword_data_list.append(keyword_data_list_entry)
-
-    if max_hover_time_entry["intent_index"] > 0:
-        cta_url += max_clicks_entry["keyword"]
-    else:
-        cta_url += "default"
+    # keyword_data_list = []
+    # max_intent_index_entry = {"keyword": None,
+    #                           "clicks": -maxint - 1,
+    #                           "hover_time": -maxint - 1,
+    #                           "intent_index": -maxint - 1}
+    # max_clicks_entry = {"keyword": None,
+    #                     "clicks": -maxint-1,
+    #                     "hover_time": -maxint-1}
+    # max_hover_time_entry = {"keyword": None,
+    #                         "clicks": -maxint - 1,
+    #                         "hover_time": -maxint - 1}
+    #
+    # for keyword in BROWSING_KEYWORDS:
+    #     keyword_clicks = getattr(browsing_data_entry, "{}_{}".format(keyword, "clicks"))
+    #     keyword_hover_time = getattr(browsing_data_entry, "{}_{}".format(keyword, "hover_time"))
+    #     keyword_data_list_entry = {"keyword": keyword,
+    #                                "clicks": keyword_clicks,
+    #                                "hover_time": keyword_hover_time,
+    #                                "intent_index": 10*keyword_clicks+keyword_hover_time}
+    #
+    #     max_clicks_entry = max(max_clicks_entry, keyword_data_list_entry, key=lambda entry: entry['clicks'])
+    #     max_hover_time_entry = max(max_hover_time_entry, keyword_data_list_entry, key=lambda entry: entry['hover_time'])
+    #     max_intent_index_entry = max(max_intent_index_entry, keyword_data_list_entry, key=lambda entry: entry['intent_index'])
+    #     keyword_data_list.append(keyword_data_list_entry)
+    #
+    # if max_hover_time_entry["intent_index"] > 0:
+    #     cta_url += max_clicks_entry["keyword"]
+    # else:
+    #     cta_url += "default"
 
     # if max_clicks_entry["clicks"] > 0:
     #     cta_url += max_clicks_entry["keyword"]
@@ -209,5 +209,7 @@ def retrieve_cta_based_on_browsing_data(browsing_data_entry):
     #     cta_url += max_clicks_entry["keyword"]
     # else:
     #     cta_url += "default"
+
+    cta_url += browsing_data_entry.current_intent
 
     return cta_url

@@ -1,15 +1,17 @@
 from __future__ import print_function
 from twisted.internet.defer import inlineCallbacks
-from db_models import PresenceBrowsingData
+from twistar_db_models import PresenceBrowsingData
 from twisted.internet.defer import returnValue
 
 
 @inlineCallbacks
 def find_presence_health_db_entry_from_cookie_id(cookie_user_id):
     """
+    This function takes a cookie id, parses it for any errors, and returns the corresponding Presence Browsing Data
+    instance.
 
-    :param cookie_user_id:
-    :return:
+    :param cookie_user_id: (type: String) Cookie id of presence health browsing data row.
+    :return: (type: twistar PresenceBrowsingData instance) Presence Browsing Data instance.
     """
 
     browsing_data_entry = yield PresenceBrowsingData.findBy(cookie_id=cookie_user_id)

@@ -71,9 +71,10 @@
                     },
                     "paths": {
                         "/": {
-                            "type": "static",
-                            "directory": "../index"
-                        },
+                             "type": "wsgi",
+                             "module": "patient_assist_admin",
+                             "object": "app"
+                          },
                         "staticfiles": {
                             "type": "static",
                             "directory": "../staticfiles"
