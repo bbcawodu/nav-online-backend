@@ -1,16 +1,20 @@
-## Presence Health Browsing Data API README
-## Current list of intent keywords: http://picbackend.herokuapp.com/v2/cta/?intent=all
+## Browsing Session Data WAMP(Real Time) Server API README  - Presence Health
 
-### Procedure: Create Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.create_browsing_data_instance)
+![Browsing Session Data ERD - Presence Health](../../db_erds/presence_health/browsing_session_data_erd.jpg)
+
+## [Current list of intent keywords](http://picbackend.herokuapp.com/v2/cta/?intent=all)
+
+### Procedure Endpoint: Create row in the presence_browsing_session_data table
+### (URI: patient_assist_backend.presence_health.create_browsing_data_instance)
     ```
-    This procedure creates a new presence health browsing data db entry and returns the db id and cookie_id of the
+    This procedure creates a new row in the presence_browsing_session_data table of the database and returns the db id and cookie_id of the
     newly created entry.
     
     Procedure uri: 'patient_assist_backend.presence_health.create_browsing_data_instance'
     
     Takes no params
-    
-    :return: Returns keywords results that are accessible through the results' kwargs property.
+      
+    :return: Returns an object that has a property, kwargs. That property will have the following properties:
             id: (type: Integer) Database id of newly created presence health browsing data row
             cookie_id: (type: String) Cookie id of newly created presence health browsing data row
     ```
@@ -59,11 +63,143 @@
        </body>
     </html>
     ```
-    
-### Procedure: Submit Presence Health Browsing Data (URI: patient_assist_backend.presence_health.submit_browsing_data)
+
+## IN DEVELOPMENT
+### Procedure Endpoint: Read row from presence_browsing_session_data table of the database
+### (URI: patient_assist_backend.presence_health.read_presence_browsing_session_data_table)
     ```
-    This procedure takes a given cookie_id corresponding to a presence health browsing data db row along with client
-    browsing data information, updates the db record, and returns relevant updated info about the entry.
+    This procedure reads/queries the presence_browsing_session_data table of the database for a row that has a matching
+    value in the id field for the given id parameter.
+    
+    Procedure uri: 'patient_assist_backend.presence_health.read_presence_browsing_session_data_table'
+    
+    :param args: Argument list. Accepts only one argument
+                 [id]
+                 id: (type: Integer) Database id of desired row.
+      
+    :return: Returns an object that has a property, kwargs. That property will have the following properties:
+             id: (type: Integer) id of presence_browsing_session_data row
+             keyword_clicks: (type: Integer) number of clicks corresponding to given keyword
+             keyword_hover_time: (type: Float) length of hover time corresponding to given keyword
+    ```
+
+- Example Javascript Call
+    ```
+    <!DOCTYPE html>
+    <html>
+       <body>
+          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+          <p>Open JavaScript console to watch output.</p>
+          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+          <script>
+          try {
+               var autobahn = require('autobahn');
+               var when = require('when');
+            } catch (e) {
+               // When running in browser, AutobahnJS will
+               // be included without a module system
+               var when = autobahn.when;
+            }
+            
+            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+            var connection = new autobahn.Connection({
+                               url: wsuri,
+                               realm: 'patient_assist_realm'}
+                            );
+                            
+            connection.onopen = function (session) {
+               var dl = [];
+               var id = 1;
+            
+               dl.push(session.call('patient_assist_backend.presence_health.read_presence_browsing_session_data_table', [id]).then(
+                  function (res) {
+                     console.log("Result: DB ID:" + res.kwargs.id + ", keyword_clicks: " + res.kwargs.keyword_clicks + ", keyword_hover_time: " + res.kwargs.keyword_hover_time);
+                  }
+               ));
+            
+               when.all(dl).then(function () {
+                  console.log("All finished.");
+                  connection.close();
+               });
+            };
+            
+            connection.open();
+          </script>
+       </body>
+    </html>
+    ```
+    
+##IN DEVELOPMENT
+###Procedure Endpoint: Read current browsing intent of row from presence_browsing_session_data table of the database
+###(URI: patient_assist_backend.presence_health.read_current_browsing_intent)
+    ```
+    This procedure calculates and returns the current browsing intent of a row in the presence_browsing_session_data
+    table of the database for the given id parameter.
+    
+    Procedure uri: 'patient_assist_backend.presence_health.read_current_browsing_intent'
+    
+    :param args: Argument list. Accepts only one argument
+                 [id]
+                 id: (type: Integer) Database id of desired row.
+      
+    :return: Returns an object that has a property, kwargs. That property will have the following properties:
+             id: (type: Integer) id of presence_browsing_session_data row
+             current_intent: (type: String) current browsing intent of given row
+             cta_url: (type: String) URL for Call to Action for current browsing intent
+    ```
+
+- Example Javascript Call
+    ```
+    <!DOCTYPE html>
+    <html>
+       <body>
+          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+          <p>Open JavaScript console to watch output.</p>
+          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+          <script>
+          try {
+               var autobahn = require('autobahn');
+               var when = require('when');
+            } catch (e) {
+               // When running in browser, AutobahnJS will
+               // be included without a module system
+               var when = autobahn.when;
+            }
+            
+            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+            var connection = new autobahn.Connection({
+                               url: wsuri,
+                               realm: 'patient_assist_realm'}
+                            );
+                            
+            connection.onopen = function (session) {
+               var dl = [];
+               var id = 1;
+            
+               dl.push(session.call('patient_assist_backend.presence_health.read_current_browsing_intent', [id]).then(
+                  function (res) {
+                     console.log("Result: DB ID:" + res.kwargs.id + ", current_intent: " + res.kwargs.current_intent + ", cta_url: " + res.kwargs.cta_url);
+                  }
+               ));
+            
+               when.all(dl).then(function () {
+                  console.log("All finished.");
+                  connection.close();
+               });
+            };
+            
+            connection.open();
+          </script>
+       </body>
+    </html>
+    ```
+    
+### Procedure Endpoint: Submit Browsing Data Information for Presence Health
+### (URI: patient_assist_backend.presence_health.submit_browsing_data)
+    ```
+    This procedure takes a given cookie_id corresponding to a row in the presence_browsing_session_data table along with
+    client browsing data information, updates the row with that info, and returns relevant updated field data from that
+    row.
     
     Procedure uri: 'patient_assist_backend.presence_health.submit_browsing_data'
     
@@ -74,7 +210,7 @@
                                      keyword: (type: String) name corresponding the given browsing data. Currently only accepts 'oncology'
                                      keyword_clicks: (type: Integer) number of clicks corresponding to given keyword
                                      keyword_hover_time: (type: Float) length of hover time corresponding to given keyword
-    :return: Returns keywords results that are accessible through the results' kwargs property.
+    :return: Returns an object that has a property, kwargs. That property will have the following properties:
             id: (type: Integer) Database id of newly created presence health browsing data row
             cookie_id: (type: String) Cookie id of newly created presence health browsing data row
             oncology_clicks: (type: Integer) Total number of clicks corresponding to the 'oncology' keyword
@@ -152,7 +288,8 @@
     </html>
     ```
 
-### Procedure: Enable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.enable_cta_updates)
+##The Following 3 Endpoints Will Soon Be Depricated
+###Procedure: Enable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.enable_cta_updates)
     ```
     This procedure takes a given cookie_id corresponding to a presence health browsing data db row and sets its
     send_cta_updates value to True. When a given browsing data's instance is set to True, it will publish the URL
@@ -164,7 +301,7 @@
     :param args: Argument list. Accepts only one argument
                  [cookie_id]
                  cookie_id: (type: String) Cookie id of presence health browsing data.
-    :return: Returns keywords results that are accessible through the results' kwargs property.
+    :return: Returns an object that has a property, kwargs. That property will have the following properties:
             id: (type: Integer) Database id of newly created presence health browsing data row
             cookie_id: (type: String) Cookie id of newly created presence health browsing data row
             sending_browsing_data: (type: Boolean) Whether or not updated CTA's are being published for this entry.
@@ -238,7 +375,7 @@
     :param args: Argument list. Accepts only one argument
                  [cookie_id]
                  cookie_id: (type: String) Cookie id of presence health browsing data.
-    :return: Returns keywords results that are accessible through the results' kwargs property.
+    :return: Returns an object that has a property, kwargs. That property will have the following properties:
             id: (type: Integer) Database id of newly created presence health browsing data row
             cookie_id: (type: String) Cookie id of newly created presence health browsing data row
             sending_browsing_data: (type: Boolean) Whether or not updated CTA's are being published for this entry.
@@ -300,7 +437,7 @@
        </body>
     </html>
     ```
-    
+
 ### Updated CTA WAMP Subscription Topic (URI: patient_assist_backend.presence_health.new_ctas.<cookie_id>)
 
 - Current Algorithm:

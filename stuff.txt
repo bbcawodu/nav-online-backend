@@ -1,0 +1,624 @@
+diff --git a/documentation/connecting_to_backend.md b/documentation/connecting_to_backend.md
+deleted file mode 100644
+index c8ce29d..0000000
+--- a/documentation/connecting_to_backend.md
++++ /dev/null
+@@ -1,14 +0,0 @@
+-## Connecting to Patient Assist Backend README
+-
+-### Connecting to Patient Assist Backend
+-- In order to connect to the patient assist backend, you must use the WAMP protocol. There are several libraries 
+-  available for different programming languages. Here are a few:
+-  - Autobahn|Python: http://autobahn.ws/python/
+-  - Autobahn|JS: http://autobahn.ws/js/
+-- Once you have chosen a library and a programming language, you can connect to the components of the backing using the
+-  Websocket uri, "ws://patient-assist-backend.herokuapp.com/ws". All components are in the realm, "patient_assist_realm."
+-  
+-  
+-### Viewing Patient Assist Backend Browsing Data
+-- To access an in browser, dashboard view of the stored browsing data on the Patient Assist Backend, visit
+-  "http://patient-assist-backend.herokuapp.com/admin"
+\ No newline at end of file
+diff --git a/documentation/connecting_to_backend_servers.md b/documentation/connecting_to_backend_servers.md
+new file mode 100644
+index 0000000..6a0239b
+--- /dev/null
++++ b/documentation/connecting_to_backend_servers.md
+@@ -0,0 +1,26 @@
++## Connecting to Patient Assist Browsing Data Backend Servers README
++
++### Ways to Connect to the Patient Assist Backend
++- There are 2 primary ways to connect to the patient assist backend through the web; using the HTTP protocol and using the WAMP (Web Application Messaging Protocol) protocol.
++    - **HTTP Protocol Server**
++        - Connecting to the HTTP protocol server gives access to RESTful web service endpoints that allow you to read
++        browsing data for partner hospitals that was collected from the patient assist tool.
++        - The primary use case for these endpoints is to provide the data used in the 'Intent, Utilization, and Capacity'
++        dashboard.
++        - To access an in browser, dashboard view of the stored browsing data on the Patient Assist Backend, visit
++        "http://patient-assist-backend.herokuapp.com/admin"
++    - **WAMP Protocol Server**
++        - Connecting to the WAMP protocol server  gives real time(soft) access to the browsing data database using WAMP's
++        remote procedure call(RPC) and pubsub protocols.
++        - The primary use case for these endpoints is to save and access the browsing data collected from the patient
++        assist tool in our database, on a session by session basis, in soft real time.
++        - **WAMP protocol docs**
++            - In order to have real-time(soft) web access to the patient assist browsing data backend, you must connect
++            to this server and use the WAMP protocol endpoints and services that are provided. There are several
++            libraries that provide a WAMP implementation available for different programming languages.
++            Here are a few:
++                  - Autobahn|Python: http://autobahn.ws/python/
++                  - Autobahn|JS: http://autobahn.ws/js/
++            - Once you have chosen a library and a programming language, you can connect to our server using the
++            websocket uri, "ws://patient-assist-backend.herokuapp.com/ws". All WAMP components are in the realm,
++            "patient_assist_realm."
+\ No newline at end of file
+diff --git a/documentation/presence_health/browsing_data_API.md b/documentation/presence_health/browsing_data_API.md
+deleted file mode 100644
+index c29fa2f..0000000
+--- a/documentation/presence_health/browsing_data_API.md
++++ /dev/null
+@@ -1,360 +0,0 @@
+-## Presence Health Browsing Data API README
+-## Current list of intent keywords: http://picbackend.herokuapp.com/v2/cta/?intent=all
+-
+-### Procedure: Create Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.create_browsing_data_instance)
+-    ```
+-    This procedure creates a new presence health browsing data db entry and returns the db id and cookie_id of the
+-    newly created entry.
+-    
+-    Procedure uri: 'patient_assist_backend.presence_health.create_browsing_data_instance'
+-    
+-    Takes no params
+-    
+-    :return: Returns keywords results that are accessible through the results' kwargs property.
+-            id: (type: Integer) Database id of newly created presence health browsing data row
+-            cookie_id: (type: String) Cookie id of newly created presence health browsing data row
+-    ```
+-
+-- Example Javascript Call
+-    ```
+-    <!DOCTYPE html>
+-    <html>
+-       <body>
+-          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+-          <p>Open JavaScript console to watch output.</p>
+-          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+-          <script>
+-          try {
+-               var autobahn = require('autobahn');
+-               var when = require('when');
+-            } catch (e) {
+-               // When running in browser, AutobahnJS will
+-               // be included without a module system
+-               var when = autobahn.when;
+-            }
+-            
+-            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+-            var connection = new autobahn.Connection({
+-                               url: wsuri,
+-                               realm: 'patient_assist_realm'}
+-                            );
+-                            
+-            connection.onopen = function (session) {
+-               var dl = [];
+-            
+-               dl.push(session.call('patient_assist_backend.presence_health.create_browsing_data_instance').then(
+-                  function (res) {
+-                     console.log("Result: DB ID:" + res.kwargs.id + ", Cookie ID: " + res.kwargs.cookie_id);
+-                  }
+-               ));
+-            
+-               when.all(dl).then(function () {
+-                  console.log("All finished.");
+-                  connection.close();
+-               });
+-            };
+-            
+-            connection.open();
+-          </script>
+-       </body>
+-    </html>
+-    ```
+-    
+-### Procedure: Submit Presence Health Browsing Data (URI: patient_assist_backend.presence_health.submit_browsing_data)
+-    ```
+-    This procedure takes a given cookie_id corresponding to a presence health browsing data db row along with client
+-    browsing data information, updates the db record, and returns relevant updated info about the entry.
+-    
+-    Procedure uri: 'patient_assist_backend.presence_health.submit_browsing_data'
+-    
+-    :param args: Argument list. Accepts only one argument
+-                 [browsing_data_json]
+-                 browsing_data_json: A JSON formatted object that has the following mandatory keys
+-                                     cookie_id: (type: String) Cookie id of presence health browsing data row
+-                                     keyword: (type: String) name corresponding the given browsing data. Currently only accepts 'oncology'
+-                                     keyword_clicks: (type: Integer) number of clicks corresponding to given keyword
+-                                     keyword_hover_time: (type: Float) length of hover time corresponding to given keyword
+-    :return: Returns keywords results that are accessible through the results' kwargs property.
+-            id: (type: Integer) Database id of newly created presence health browsing data row
+-            cookie_id: (type: String) Cookie id of newly created presence health browsing data row
+-            oncology_clicks: (type: Integer) Total number of clicks corresponding to the 'oncology' keyword
+-            oncology_hover_time: (type: Float) Total amount of time corresponding to the 'oncology' keyword
+-            
+-    Possible Errors:
+-    'patient_assist_backend.submit_browsing_data_presence_health' accepts exactly 1 argument, browsing data.
+-    browsing data must be a unicode objector string object.
+-    Decoding browsing data JSON has failed
+-    No Presence Health Browsing data entry found for cookie_id
+-    More than one Presence Health Browsing data entry found for cookie_id
+-    'cookie_id' must be a unicode or string object
+-    'cookie_id' key is not present in browsing data JSON object.
+-    'keyword' must be a unicode or string object.
+-    'keyword' must be in the following list of accepted keywords: ['oncology', etc.]
+-    'keyword' key is not present in browsing data JSON object.
+-    'keyword_clicks' must be an integer.
+-    'keyword_clicks' must be an positive.
+-    'keyword_clicks' key is not present in browsing data JSON object.
+-    'keyword_hover_time' must be a floating point.
+-    'keyword_hover_time' must be positive
+-    'keyword_hover_time' key is not present in browsing data JSON object.
+-    
+-    ```
+-
+-- Example Javascript Call
+-    ```
+-    <!DOCTYPE html>
+-    <html>
+-       <body>
+-          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+-          <p>Open JavaScript console to watch output.</p>
+-          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+-          <script>
+-          try {
+-               var autobahn = require('autobahn');
+-               var when = require('when');
+-            } catch (e) {
+-               // When running in browser, AutobahnJS will
+-               // be included without a module system
+-               var when = autobahn.when;
+-            }
+-            
+-            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+-            var connection = new autobahn.Connection({
+-                               url: wsuri,
+-                               realm: 'patient_assist_realm'}
+-                            );
+-                            
+-            connection.onopen = function (session) {
+-               var dl = [];
+-            
+-               var browsing_data_obj = {"cookie_id": 16,
+-                                        "keyword": "oncology",
+-                                        "keyword_clicks": 2,
+-                                        "keyword_hover_time": 3.2};
+-               dl.push(session.call('patient_assist_backend.presence_health.submit_browsing_data', [JSON.stringify(browsing_data_obj)]).then(
+-                  function (res) {
+-                     console.log("Result: clicks:" + res.kwargs.oncology_clicks + ", hover time: " + res.kwargs.oncology_hover_time);
+-                  },
+-                  function (err) {
+-                     console.log("Error:", err.error, err.args, err.kwargs);
+-                  }
+-               ));
+-            
+-               when.all(dl).then(function () {
+-                  console.log("All finished.");
+-                  connection.close();
+-               });
+-            };
+-            
+-            connection.open();
+-          </script>
+-       </body>
+-    </html>
+-    ```
+-
+-### Procedure: Enable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.enable_cta_updates)
+-    ```
+-    This procedure takes a given cookie_id corresponding to a presence health browsing data db row and sets its
+-    send_cta_updates value to True. When a given browsing data's instance is set to True, it will publish the URL
+-    for the most updated CTA for a given browsing data instance at uri 
+-    'patient_assist_backend.presence_health.new_ctas.<cookie_id>'.
+-    
+-    Procedure uri: 'patient_assist_backend.presence_health.enable_cta_updates'
+-    
+-    :param args: Argument list. Accepts only one argument
+-                 [cookie_id]
+-                 cookie_id: (type: String) Cookie id of presence health browsing data.
+-    :return: Returns keywords results that are accessible through the results' kwargs property.
+-            id: (type: Integer) Database id of newly created presence health browsing data row
+-            cookie_id: (type: String) Cookie id of newly created presence health browsing data row
+-            sending_browsing_data: (type: Boolean) Whether or not updated CTA's are being published for this entry.
+-            
+-    Possible Errors:
+-    function accepts exactly 1 positional argument, cookie_id.
+-    cookie_id must be a unicode or string object
+-    No Presence Health Browsing data entry found for cookie_id
+-    More than one Presence Health Browsing data entry found for cookie_id
+-    
+-    ```
+-
+-- Example Javascript Call
+-    ```
+-    <!DOCTYPE html>
+-    <html>
+-       <body>
+-          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+-          <p>Open JavaScript console to watch output.</p>
+-          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+-          <script>
+-          try {
+-               var autobahn = require('autobahn');
+-               var when = require('when');
+-            } catch (e) {
+-               // When running in browser, AutobahnJS will
+-               // be included without a module system
+-               var when = autobahn.when;
+-            }
+-            
+-            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+-            var connection = new autobahn.Connection({
+-                               url: wsuri,
+-                               realm: 'patient_assist_realm'}
+-                            );
+-               
+-            var cookie_id = localStorage.getItem("pic_patient_assist_cookie_id");
+-            
+-            connection.onopen = function (session) {
+-               var dl = [];
+-            
+-               dl.push(session.call('patient_assist_backend.presence_health.enable_cta_updates', [cookie_id]).then(
+-                  function (res) {
+-                     console.log("Result: Cookie ID:" + res.kwargs.cookie_id + ", Sending Browsing Data?: " + res.kwargs.sending_browsing_data);
+-                  },
+-                  function (err) {
+-                     console.log("Error:", err.error, err.args, err.kwargs);
+-                  }
+-               ));
+-            
+-               when.all(dl).then(function () {
+-                  console.log("All finished.");
+-                  connection.close();
+-               });
+-            };
+-            
+-            connection.open();
+-          </script>
+-       </body>
+-    </html>
+-    ```
+-
+-### Procedure: Disable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.disable_cta_updates)
+-    ```
+-    This procedure takes a given cookie_id corresponding to a presence health browsing data db row and sets its
+-    send_cta_updates value to True. When a given browsing data's instance is set to False, it will NOT publish the URL
+-    for the most updated CTA until set back to True.
+-    
+-    Procedure uri: 'patient_assist_backend.presence_health.disable_cta_updates'
+-    
+-    :param args: Argument list. Accepts only one argument
+-                 [cookie_id]
+-                 cookie_id: (type: String) Cookie id of presence health browsing data.
+-    :return: Returns keywords results that are accessible through the results' kwargs property.
+-            id: (type: Integer) Database id of newly created presence health browsing data row
+-            cookie_id: (type: String) Cookie id of newly created presence health browsing data row
+-            sending_browsing_data: (type: Boolean) Whether or not updated CTA's are being published for this entry.
+-            
+-    Possible Errors:
+-    function accepts exactly 1 positional argument, cookie_id.
+-    cookie_id must be a unicode or string object
+-    No Presence Health Browsing data entry found for cookie_id
+-    More than one Presence Health Browsing data entry found for cookie_id
+-    
+-    ```
+-
+-- Example Javascript Call
+-    ```
+-    <!DOCTYPE html>
+-    <html>
+-       <body>
+-          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+-          <p>Open JavaScript console to watch output.</p>
+-          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+-          <script>
+-          try {
+-               var autobahn = require('autobahn');
+-               var when = require('when');
+-            } catch (e) {
+-               // When running in browser, AutobahnJS will
+-               // be included without a module system
+-               var when = autobahn.when;
+-            }
+-            
+-            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+-            var connection = new autobahn.Connection({
+-                               url: wsuri,
+-                               realm: 'patient_assist_realm'}
+-                            );
+-                            
+-            var cookie_id = localStorage.getItem("pic_patient_assist_cookie_id");
+-            
+-            connection.onopen = function (session) {
+-               var dl = [];
+-            
+-               dl.push(session.call('patient_assist_backend.presence_health.disable_cta_updates', [cookie_id]).then(
+-                  function (res) {
+-                     console.log("Result: Cookie ID:" + res.kwargs.cookie_id + ", Sending Browsing Data?: " + res.kwargs.sending_browsing_data);
+-                  },
+-                  function (err) {
+-                     console.log("Error:", err.error, err.args, err.kwargs);
+-                  }
+-               ));
+-            
+-               when.all(dl).then(function () {
+-                  console.log("All finished.");
+-                  connection.close();
+-               });
+-            };
+-            
+-            connection.open();
+-          </script>
+-       </body>
+-    </html>
+-    ```
+-    
+-### Updated CTA WAMP Subscription Topic (URI: patient_assist_backend.presence_health.new_ctas.<cookie_id>)
+-
+-- Current Algorithm:
+-    - each intent keyword has an "intent index"= 10*(clicks) + hover time
+-    - intent keyword with the highest non zero intent index is returned
+-    - if no intent keywords have an "intent index">0, default cta is returned
+-    
+-- Alternate Algorithm (Returns intent keyword that fulfills first criteria applicable of the following list):
+-    - intent keyword with the highest non zero clicks
+-    - intent keyword with the highest non zero hover time
+-    - if no intent keywords have non zero clicks or hover time, default cta is returned
+-
+-- When you subscribe to this topic, the url for the most updated CTA of the corresponding cookie_id will be published
+-  iff the sending_cta_updates value is set to TRUE,
+-  - When a subscription event is published, the result can be accessed through the keyword argument, cta_url
+-  
+-- Example Javascript call:
+-    ```
+-    <!DOCTYPE html>
+-    <html>
+-       <body>
+-          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+-          <p>Open JavaScript console to watch output.</p>
+-          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+-          <script>
+-          try {
+-               var autobahn = require('autobahn');
+-               var when = require('when');
+-            } catch (e) {
+-               // When running in browser, AutobahnJS will
+-               // be included without a module system
+-               var when = autobahn.when;
+-            }
+-            
+-            var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
+-            var connection = new autobahn.Connection({
+-                               url: wsuri,
+-                               realm: 'patient_assist_realm'}
+-                            );
+-               
+-            var cookie_id = localStorage.getItem("pic_patient_assist_cookie_id");
+-            
+-            connection.onopen = function (session) {
+-               function onevent1(args, kwargs) {
+-                  console.log("Result: call to action url:" + kwargs.cta_url);
+-               }
+-            
+-               var sub_url = 'patient_assist_backend.presence_health.new_ctas.' + cookie_id;
+-               console.log(sub_url);
+-               session.subscribe(sub_url, onevent1);
+-            };
+-            
+-            connection.open();
+-          </script>
+-       </body>
+-    </html>
+-    ```
+diff --git a/documentation/presence_health/browsing_data_HTTP_server_API/browsing_intent_snapshot_HTTP_REST_endpoint_README.md b/documentation/presence_health/browsing_data_HTTP_server_API/browsing_intent_snapshot_HTTP_REST_endpoint_README.md
+new file mode 100644
+index 0000000..affa772
+--- /dev/null
++++ b/documentation/presence_health/browsing_data_HTTP_server_API/browsing_intent_snapshot_HTTP_REST_endpoint_README.md
+@@ -0,0 +1,80 @@
++# Consumer Browsing Intent HTTP REST API README - Presence Health
++
++## [Presence Health Intent Database ERD](../db_erds/presence_health/overview_erd.jpg)
++
++### Care Advisor Customer: Read Method Endpoint
++- To read/query rows in the care_advisor_customer table of the database, make a GET request to http://picbackend.herokuapp.com/v2/care_advisor_customer/
++    - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
++    - The parameters given in the query string can be divided into 2 categories: "primary" and "secondary"
++    
++    - "primary" parameters - One and exactly one of these parameters are required in every request query string.
++        - "first_name" corresponds to the first_name column of the care_advisor_customer table.
++            - Must be a string
++            - Can be multiple values separated by commas.
++        - "last_name" corresponds to the last_name column of the care_advisor_customer table.
++            - Must be a string
++            - Can be multiple values separated by commas.
++        - "email" corresponds to the email column of the care_advisor_customer table.
++            - Must be a string
++            - Can be multiple values separated by commas.
++        - "company_name" corresponds to the company_name column of the care_advisor_customer table.
++            - Must be an ascii string that has all non-ascii characters url encoded
++        - "phone_number" corresponds to the column of the care_advisor_customer table.
++            - Must be an integer
++            - Must be in the following format: DDDDDDDDDD where D=base 10 digit
++            - Can be multiple values separated by commas.
++        - "id" corresponds to the id column of the care_advisor_customer table.
++            - Must be an integer
++            - Can be multiple values separated by commas.
++            - passing "all" as the value will return all staff members.
++        - SPECIAL CASE: Only "first_name" and "last_name" can be given simultaneously as parameters in the query string.
++            - When "first_name" and "last_name" are given at the same time, only one value of each permitted for each parameter.
++            
++    - "Secondary" parameters - Any number of these parameters can be added to a request query string.
++        - None
++    
++- The response will be a JSON document with the following format:
++    ```
++    {
++        "Data": [
++            {
++                "first_name": String,
++                "last_name": String,
++                "email": String,
++                "company_name": String,
++                "phone_number": String,
++                "id": Integer,
++            },
++            ...,
++            ...,
++            ...,
++        ],
++        "Status": {
++            "Version": 2.0,
++            "Error Code": Integer,
++            "Errors": Array
++        }
++    }
++    ```
++
++- NOTES
++    - If the 'primary' parameter given in the query string is not 'id', results will be grouped by the 'primary' parameter that is given with the request.
++        -Eg: If "first_name" is the "primary" parameter the results will be grouped like the following
++            
++            ```
++            "Data": [
++                [Results for first_name parameter 2],
++                [Results for first_name parameter 1],
++                [Results for first_name parameter 3],
++                ...,
++            ] (Order is arbitrary)
++            ```
++  
++- If there ARE NO errors parsing the request body and rows in the care_advisor_customer table of the database ARE found:
++    - The value for the "Errors" key in the response root object will an empty array
++    - The value for the "Error Code" key in the response root object will be 0. 
++- If there ARE errors parsing the request body or rows in the care_advisor_customer table of the database ARE NOT found,
++    - "Error Code" will be 1.
++    - An array of length > 0 will be the value for the "Errors" key in the "Status" dictionary.
++        -Each item in the array is a string corresponding to an error in the JSON Body doc.
++    - Array corresponding to the "Data" key will be empty.
+\ No newline at end of file
+diff --git a/documentation/presence_health/browsing_data_HTTP_server_API/browsing_session_data_HTTP_REST_endpoint_README.md b/documentation/presence_health/browsing_data_HTTP_server_API/browsing_session_data_HTTP_REST_endpoint_README.md
+new file mode 100644
+index 0000000..f9f0661
+--- /dev/null
++++ b/documentation/presence_health/browsing_data_HTTP_server_API/browsing_session_data_HTTP_REST_endpoint_README.md
+@@ -0,0 +1,80 @@
++# Session Browsing Data HTTP REST API README - Presence Health
++
++## [Session Browsing Data Table ERD](../db_erds/presence_health/overview_erd.jpg)
++
++### Care Advisor Customer: Read Method Endpoint
++- To read/query rows in the care_advisor_customer table of the database, make a GET request to http://picbackend.herokuapp.com/v2/care_advisor_customer/
++    - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
++    - The parameters given in the query string can be divided into 2 categories: "primary" and "secondary"
++    
++    - "primary" parameters - One and exactly one of these parameters are required in every request query string.
++        - "first_name" corresponds to the first_name column of the care_advisor_customer table.
++            - Must be a string
++            - Can be multiple values separated by commas.
++        - "last_name" corresponds to the last_name column of the care_advisor_customer table.
++            - Must be a string
++            - Can be multiple values separated by commas.
++        - "email" corresponds to the email column of the care_advisor_customer table.
++            - Must be a string
++            - Can be multiple values separated by commas.
++        - "company_name" corresponds to the company_name column of the care_advisor_customer table.
++            - Must be an ascii string that has all non-ascii characters url encoded
++        - "phone_number" corresponds to the column of the care_advisor_customer table.
++            - Must be an integer
++            - Must be in the following format: DDDDDDDDDD where D=base 10 digit
++            - Can be multiple values separated by commas.
++        - "id" corresponds to the id column of the care_advisor_customer table.
++            - Must be an integer
++            - Can be multiple values separated by commas.
++            - passing "all" as the value will return all staff members.
++        - SPECIAL CASE: Only "first_name" and "last_name" can be given simultaneously as parameters in the query string.
++            - When "first_name" and "last_name" are given at the same time, only one value of each permitted for each parameter.
++            
++    - "Secondary" parameters - Any number of these parameters can be added to a request query string.
++        - None
++    
++- The response will be a JSON document with the following format:
++    ```
++    {
++        "Data": [
++            {
++                "first_name": String,
++                "last_name": String,
++                "email": String,
++                "company_name": String,
++                "phone_number": String,
++                "id": Integer,
++            },
++            ...,
++            ...,
++            ...,
++        ],
++        "Status": {
++            "Version": 2.0,
++            "Error Code": Integer,
++            "Errors": Array
++        }
++    }
++    ```
++
++- NOTES
++    - If the 'primary' parameter given in the query string is not 'id', results will be grouped by the 'primary' parameter that is given with the request.
++        -Eg: If "first_name" is the "primary" parameter the results will be grouped like the following
++            
++            ```
++            "Data": [
++                [Results for first_name parameter 2],
++                [Results for first_name parameter 1],
++                [Results for first_name parameter 3],
++                ...,
++            ] (Order is arbitrary)
++            ```
++  
++- If there ARE NO errors parsing the request body and rows in the care_advisor_customer table of the database ARE found:
++    - The value for the "Errors" key in the response root object will an empty array
++    - The value for the "Error Code" key in the response root object will be 0. 
++- If there ARE errors parsing the request body or rows in the care_advisor_customer table of the database ARE NOT found,
++    - "Error Code" will be 1.
++    - An array of length > 0 will be the value for the "Errors" key in the "Status" dictionary.
++        -Each item in the array is a string corresponding to an error in the JSON Body doc.
++    - Array corresponding to the "Data" key will be empty.
+\ No newline at end of file
+diff --git a/documentation/presence_health/browsing_data_HTTP_server_API/cta_shown_to_user_HTTP_REST_endpoint_README.md b/documentation/presence_health/browsing_data_HTTP_server_API/cta_shown_to_user_HTTP_REST_endpoint_README.md
+new file mode 100644
+index 0000000..e69de29
+diff --git a/documentation/presence_health/browsing_data_HTTP_server_API/index.md b/documentation/presence_health/browsing_data_HTTP_server_API/index.md
+new file mode 100644
+index 0000000..1409043
+--- /dev/null
++++ b/documentation/presence_health/browsing_data_HTTP_server_API/index.md
+@@ -0,0 +1,5 @@
++## Presence Health Browsing Data HTTP REST API README
++
++## [Session Browsing Data HTTP REST API README](session_browsing_data_HTTP_REST_API_README.md)
++
++## [Browsing Intent Snapshot HTTP REST API README](browsing_intent_snapshot_HTTP_REST_API_README.md)
+\ No newline at end of file
+diff --git a/documentation/presence_health/browsing_data_WAMP_server_API/browsing_intent_snapshot_WAMP_RPC_endpoints_README.md b/documentation/presence_health/browsing_data_WAMP_server_API/browsing_intent_snapshot_WAMP_RPC_endpoints_README.md
+new file mode 100644
+index 0000000..e69de29
+diff --git a/documentation/presence_health/browsing_data_WAMP_server_API/browsing_session_data_WAMP_RPC_endpoints_README.md b/documentation/presence_health/browsing_data_WAMP_server_API/browsing_session_data_WAMP_RPC_endpoints_README.md
+new file mode 100644
+index 0000000..e69de29
+diff --git a/documentation/presence_health/browsing_data_WAMP_server_API/cta_shown_to_user_WAMP_RPC_endpoints_README.md b/documentation/presence_health/browsing_data_WAMP_server_API/cta_shown_to_user_WAMP_RPC_endpoints_README.md
+new file mode 100644
+index 0000000..e69de29
+diff --git a/documentation/presence_health/browsing_data_WAMP_server_API/index.md b/documentation/presence_health/browsing_data_WAMP_server_API/index.md
+new file mode 100644
+index 0000000..e69de29
+diff --git a/documentation/presence_health/index.md b/documentation/presence_health/index.md
+new file mode 100644
+index 0000000..e69de29

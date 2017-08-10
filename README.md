@@ -26,6 +26,8 @@
 
 ### DOCS
 
-#### [Connecting to Patient Assist Backend README](documentation/connecting_to_backend.md)
+#### [Connecting to Patient Assist Browsing Data Backend Servers README](documentation/connecting_to_backend_servers.md)
 
-#### [Presence Health Browsing Data API README](documentation/presence_health/browsing_data_API.md)
+#### [Presence Health Browsing Data API README](documentation/presence_health/index.md)
+
+[Patient Assist Browsing Data Backend Database ERD](documentation/db_erds/full_db_erd.jpg)
