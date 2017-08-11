@@ -1,7 +1,7 @@
-## Presence Health Browsing Data API README
+## Browsing Data Backend Servers API README - Presence Health
 
-## [Complete Database ERD for Browsing Data - Presence Health](../db_erds/presence_health/full_db_erd.jpg)
+## [Complete Browsing Data Database ERD - Presence Health](../db_erds/presence_health/full_db_erd.jpg)
 
-## [Browsing Data WAMP(Real Time) Server API README](browsing_data_WAMP_server_API/index.md)
+## [WAMP(Real Time) Server API README](WAMP_server_API/index.md)
 
-## [Browsing Data HTTP Server API README](browsing_data_HTTP_server_API/index.md)
+## [HTTP Server API README](HTTP_server_API/index.md)

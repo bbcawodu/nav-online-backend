@@ -5,7 +5,7 @@
 ## IN DEVELOPMENT
 ### Browsing Session Data: Read Method Endpoint
 - To read/query rows in the presence_browsing_session_data table of the database, make a GET request to
-http://patient-assist-backend.herokuapp.com/v2/presence_browsing_session_data/
+http://patient-assist-backend.herokuapp.com/v1/presence_browsing_session_data/
     - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
     - The parameters given in the query string can be divided into 2 categories: "primary" and "secondary"
     
@@ -25,7 +25,7 @@ http://patient-assist-backend.herokuapp.com/v2/presence_browsing_session_data/
         - "max_date" - Maximum date for the date_created column of the presence_browsing_session_data table
             - Must be given in "YYYY-MM-DD" format
     
-- The response will be a JSON document with the following format:
+- The response body will be JSON formatted text with the following format:
     ```
     {
         "Data": [

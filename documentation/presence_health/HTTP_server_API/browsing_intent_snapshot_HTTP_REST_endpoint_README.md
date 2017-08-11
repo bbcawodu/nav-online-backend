@@ -5,7 +5,7 @@
 ## IN DEVELOPMENT
 ### Browsing Intent Snapshot: Read Method Endpoint
 - To read/query rows in the consumer_browsing_intent_snapshot table of the database, make a GET request to
-http://patient-assist-backend.herokuapp.com/v2/consumer_browsing_intent_snapshot/
+http://patient-assist-backend.herokuapp.com/v1/consumer_browsing_intent_snapshot/
     - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
     - The parameters given in the query string can be divided into 2 categories: "primary" and "secondary"
     
@@ -22,16 +22,16 @@ http://patient-assist-backend.herokuapp.com/v2/consumer_browsing_intent_snapshot
             - Must be an ascii string that has all non-ascii characters url encoded
             
     - "Secondary" parameters - Any number of these parameters can be added to a request query string.
-        - "min_keyword_clicks" corresponds to the minimum value for the 'keyword'_clicks column of the presence_browsing_session_data table where 'keyword' is the corresponding intent keyword.
+        - "min_keyword_clicks" corresponds to the minimum value for the 'keyword'_clicks column of the consumer_browsing_intent_snapshot table where 'keyword' is the corresponding intent keyword.
             - Must be an integer.
-        - "min_'keyword'_hover_time" corresponds to the minimum value for the 'keyword'_hover_time column of the presence_browsing_session_data table where 'keyword' is the corresponding intent keyword.
+        - "min_'keyword'_hover_time" corresponds to the minimum value for the 'keyword'_hover_time column of the consumer_browsing_intent_snapshot table where 'keyword' is the corresponding intent keyword.
             - Must be a float.
         - "min_date" - Minimum date for the date_created column of the consumer_browsing_intent_snapshot table
             - Must be given in "YYYY-MM-DD" format
         - "max_date" - Maximum date for the date_created column of the consumer_browsing_intent_snapshot table
             - Must be given in "YYYY-MM-DD" format
     
-- The response will be a JSON document with the following format:
+- The response body will be JSON formatted text with the following format:
     ```
     {
         "Data": [

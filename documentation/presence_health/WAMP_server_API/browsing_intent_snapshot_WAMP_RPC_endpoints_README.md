@@ -7,8 +7,7 @@
 ### (URI: patient_assist_backend.presence_health.create_browsing_intent_snapshot)
     ```
     This procedure creates a new row in the consumer_browsing_intent_snapshot table of the database and adds a many to
-    one relationship to the presence_browsing_session_data row that has a matching value in the id field for the given
-    id parameter.
+    one relationship to the presence_browsing_session_data row whose id field matches the given browsing_session_id parameter.
     
     Procedure uri: 'patient_assist_backend.presence_health.create_browsing_intent_snapshot'
     
@@ -18,7 +17,7 @@
       
     :return: Returns an object that has a property, kwargs. That property will have the following properties:
             id: (type: Integer) Database id of new consumer_browsing_intent_snapshot row.
-            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that this row is related to.
+            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that the new consumer_browsing_intent_snapshot row is related to.
             date_created: (type: String) Date consumer_browsing_intent_snapshot row was created in "YYYY-MM-DD" format
             keyword_clicks: (type: Integer) number of clicks corresponding to given keyword that was used to calculate the intent of this snapshot.
             keyword_hover_time: (type: Float) length of hover time corresponding to given keyword that was used to calculate the intent of this snapshot.
@@ -82,8 +81,8 @@
 ### Procedure Endpoint: Read rows from consumer_browsing_intent_snapshot table of the database
 ### (URI: patient_assist_backend.presence_health.read_browsing_intent_snapshots)
     ```
-    This procedure reads/queries the consumer_browsing_intent_snapshot table of the database for rows that have matching
-    values in the id field of the related presence_browsing_session_data row for the given id parameter.
+    This procedure reads/queries the consumer_browsing_intent_snapshot table of the database for rows whose id field of
+    the related presence_browsing_session_data row matches the given id parameter.
     
     Procedure uri: 'patient_assist_backend.presence_health.read_browsing_intent_snapshots'
     
@@ -93,7 +92,7 @@
       
     :return: Returns an object that has a property, kwargs. That property will have a property, data, which is an array.
     Each object in that array will have the following properties:
-            id: (type: Integer) Database id of new consumer_browsing_intent_snapshot row.
+            id: (type: Integer) Database id of consumer_browsing_intent_snapshot row.
             browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that this row is related to.
             date_created: (type: String) Date consumer_browsing_intent_snapshot row was created in "YYYY-MM-DD" format
             keyword_clicks: (type: Integer) number of clicks corresponding to given keyword that was used to calculate the intent of this snapshot.
