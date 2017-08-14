@@ -9,7 +9,7 @@ intent, utilization, and capacity data collected by the patient assist plugin in
     ### Acceptance Stories
     - Acceptance stories for Sally Stakeholder
     
-        #### Scenario 1: Sally Stakeholder has authorized login credentials and visits the Smart Help Desk.
+        #### Scenario 1: Sally Stakeholder has authorized login credentials and visits the Smart Help Desk URL.
         - Given [context] And [some more context]… When [event] Then [outcome] And [another outcome]…
 
 ## System Personae
