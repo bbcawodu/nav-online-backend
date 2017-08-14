@@ -1,12 +1,12 @@
-## Patient Assist Browsing Data Backend Servers
+# Patient Assist Browsing Data Backend Servers
 
-### Installation
+## Installation
 - Clone Repository
 - Download and install python 2.7 and virtualenv
 - Install PostgresSQL and create local database with privileges granted to a user.
 - Install the Heroku developer toolbar.
 
-#### Local Installation
+## Local Installation
 - Change dir to project directory.
 - Start virtual environment
 - Run ```pip install -r requirements.txt```
@@ -19,15 +19,18 @@
     - ```crossbar start```
     - ```heroku local```
     
-#### Heroku Deployment Instructions
+## Heroku Deployment Instructions
 - Create app, provision db, and connect app to a git repo
 - Updates to app will now be connected to commits to the git repo
 - NOTE: Don't forget to run migrations on the production db as well
 
-### DOCS
+## User Stories for the Backend Servers
+### [User Stories for the Backend Servers](documentation/user_stories/index.md)
 
-#### [Connecting to Browsing Data Backend Servers README](documentation/connecting_to_backend_servers.md)
+## API Docs
+### [Connecting to Browsing Data Backend Servers README](documentation/connecting_to_backend_servers.md)
 
-#### [Browsing Data Backend Servers API README - Presence Health](documentation/presence_health/index.md)
+### [Browsing Data Backend Servers API README - Presence Health](documentation/presence_health/index.md)
 
-[Browsing Data Backend Database ERD](documentation/db_erds/full_db_erd.jpg)
+## Database ERD
+### [Browsing Data Backend Database ERD](documentation/db_erds/full_db_erd.jpg)

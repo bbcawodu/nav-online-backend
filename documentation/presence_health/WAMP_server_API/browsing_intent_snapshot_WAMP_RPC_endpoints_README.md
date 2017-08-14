@@ -1,10 +1,12 @@
-## Browsing Intent Snapshot WAMP(Real Time) Server API README  - Presence Health
+# Browsing Intent Snapshot WAMP Server API README  - Presence Health
+### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
+### All WAMP components/enpoints are in the realm: patient_assist_realm
 
 ![Browsing Intent Snapshot ERD - Presence Health](../../db_erds/presence_health/browsing_intent_snapshot_erd.jpg)
 
-## IN DEVELOPMENT
-### Procedure Endpoint: Create row in the consumer_browsing_intent_snapshot table of the database
-### (URI: patient_assist_backend.presence_health.create_browsing_intent_snapshot)
+### IN DEVELOPMENT
+## Procedure Endpoint: Create row in the consumer_browsing_intent_snapshot table of the database
+## URI: patient_assist_backend.presence_health.create_browsing_intent_snapshot
     ```
     This procedure creates a new row in the consumer_browsing_intent_snapshot table of the database and adds a many to
     one relationship to the presence_browsing_session_data row whose id field matches the given browsing_session_id parameter.
@@ -77,9 +79,9 @@
     </html>
     ```
 
-## IN DEVELOPMENT
-### Procedure Endpoint: Read rows from consumer_browsing_intent_snapshot table of the database
-### (URI: patient_assist_backend.presence_health.read_browsing_intent_snapshots)
+### IN DEVELOPMENT
+## Procedure Endpoint: Read rows from consumer_browsing_intent_snapshot table of the database
+## URI: patient_assist_backend.presence_health.read_browsing_intent_snapshots
     ```
     This procedure reads/queries the consumer_browsing_intent_snapshot table of the database for rows whose id field of
     the related presence_browsing_session_data row matches the given id parameter.

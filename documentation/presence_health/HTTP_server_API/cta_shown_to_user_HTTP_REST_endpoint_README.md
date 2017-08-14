@@ -2,10 +2,10 @@
 
 ![CTA Shown To User ERD - Presence Health](../../db_erds/presence_health/cta_shown_to_user_erd.jpg)
 
-## IN DEVELOPMENT
-### CTA Shown To User: Read Method Endpoint
+### IN DEVELOPMENT
+## CTA Shown To User: Read Method Endpoint
 - To read/query rows in the cta_shown_to_user table of the database, make a GET request to
-http://patient-assist-backend.herokuapp.com/v1/cta_shown_to_user/
+http://patient-assist-backend.herokuapp.com/v1/presence_health/cta_shown_to_user/
     - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
     - The parameters given in the REQUIRED query string can be divided into 2 categories: "primary" and "secondary"
     

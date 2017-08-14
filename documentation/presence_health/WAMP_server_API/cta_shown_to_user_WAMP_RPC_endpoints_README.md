@@ -1,10 +1,12 @@
-## CTA Shown To User WAMP(Real Time) Server API README - Presence Health
+## CTA Shown To User WAMP Server API README - Presence Health
+### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
+### All WAMP components/enpoints are in the realm: patient_assist_realm
 
 ![CTA Shown To User ERD - Presence Health](../../db_erds/presence_health/cta_shown_to_user_erd.jpg)
 
-## IN DEVELOPMENT
-### Procedure Endpoint: Create row in the cta_shown_to_user table of the database
-### (URI: patient_assist_backend.presence_health.create_cta_shown_to_user_record)
+### IN DEVELOPMENT
+## Procedure Endpoint: Create row in the cta_shown_to_user table of the database
+## URI: patient_assist_backend.presence_health.create_cta_shown_to_user_record
     ```
     This procedure creates a new row in the cta_shown_to_user table of the database and adds a many to
     one relationship to the presence_browsing_session_data row whose id field matches the given browsing_session_id parameter.
@@ -77,9 +79,9 @@
     </html>
     ```
 
-## IN DEVELOPMENT
-### Procedure Endpoint: Read rows from cta_shown_to_user table of the database
-### (URI: patient_assist_backend.presence_health.read_cta_shown_to_user_records)
+### IN DEVELOPMENT
+## Procedure Endpoint: Read rows from cta_shown_to_user table of the database
+## URI: patient_assist_backend.presence_health.read_cta_shown_to_user_records
     ```
     This procedure reads/queries the cta_shown_to_user table of the database for rows whose id field of the related
     presence_browsing_session_data row matches the given id parameter.

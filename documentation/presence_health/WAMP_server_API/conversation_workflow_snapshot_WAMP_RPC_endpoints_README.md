@@ -1,10 +1,12 @@
-## Conversation Workflow Snapshot WAMP(Real Time) Server API README - Presence Health
+## Conversation Workflow Snapshot WAMP Server API README - Presence Health
+### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
+### All WAMP components/enpoints are in the realm: patient_assist_realm
 
 ![Conversation Workflow Snapshot ERD - Presence Health](../../db_erds/presence_health/conversation_workflow_snapshot_erd.jpg)
 
-## IN DEVELOPMENT
-### Procedure Endpoint: Create row in the conversation_workflow_snapshot table of the database
-### (URI: patient_assist_backend.presence_health.create_conversation_workflow_snapshot)
+### IN DEVELOPMENT
+## Procedure Endpoint: Create row in the conversation_workflow_snapshot table of the database
+## URI: patient_assist_backend.presence_health.create_conversation_workflow_snapshot
     ```
     This procedure creates a new row in the conversation_workflow_snapshot table of the database and adds a many to
     one relationship to the presence_browsing_session_data row whose id field matches the given browsing_session_id parameter.
@@ -87,9 +89,9 @@
     </html>
     ```
 
-## IN DEVELOPMENT
-### Procedure Endpoint: Read rows from conversation_workflow_snapshot table of the database
-### (URI: patient_assist_backend.presence_health.read_conversation_workflow_snapshots)
+### IN DEVELOPMENT
+## Procedure Endpoint: Read rows from conversation_workflow_snapshot table of the database
+## URI: patient_assist_backend.presence_health.read_conversation_workflow_snapshots
     ```
     This procedure reads/queries the cconversation_workflow_snapshot table of the database for rows whose id field of
     the related presence_browsing_session_data row matches the given id parameter.

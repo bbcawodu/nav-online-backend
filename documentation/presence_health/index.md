@@ -1,4 +1,4 @@
-## Browsing Data Backend Servers API README - Presence Health
+# Browsing Data Backend Servers API README - Presence Health
 
 ## [Complete Browsing Data Database ERD - Presence Health](../db_erds/presence_health/full_db_erd.jpg)
 

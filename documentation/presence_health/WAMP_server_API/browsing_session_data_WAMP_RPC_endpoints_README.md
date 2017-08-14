@@ -1,11 +1,13 @@
-## Browsing Session Data WAMP(Real Time) Server API README  - Presence Health
+# Browsing Session Data WAMP Server API README  - Presence Health
+### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
+### All WAMP components/enpoints are in the realm: patient_assist_realm
 
 ![Browsing Session Data ERD - Presence Health](../../db_erds/presence_health/browsing_session_data_erd.jpg)
 
 ## [Current list of intent keywords](http://picbackend.herokuapp.com/v2/cta/?intent=all)
 
-### Procedure Endpoint: Create row in the presence_browsing_session_data table
-### (URI: patient_assist_backend.presence_health.create_browsing_data_instance)
+## Procedure Endpoint: Create row in the presence_browsing_session_data table
+## URI: patient_assist_backend.presence_health.create_browsing_data_instance
     ```
     This procedure creates a new row in the presence_browsing_session_data table of the database and returns the db id and cookie_id of the
     newly created entry.
@@ -64,9 +66,9 @@
     </html>
     ```
 
-## IN DEVELOPMENT
-### Procedure Endpoint: Read row from presence_browsing_session_data table of the database
-### (URI: patient_assist_backend.presence_health.read_presence_browsing_session_data_table)
+### IN DEVELOPMENT
+## Procedure Endpoint: Read row from presence_browsing_session_data table of the database
+## URI: patient_assist_backend.presence_health.read_presence_browsing_session_data_table
     ```
     This procedure reads/queries the presence_browsing_session_data table of the database for a row that has a matching
     value in the id field for the given id parameter.
@@ -129,9 +131,9 @@
     </html>
     ```
     
-##IN DEVELOPMENT
-###Procedure Endpoint: Read current browsing intent of row from presence_browsing_session_data table of the database
-###(URI: patient_assist_backend.presence_health.read_current_browsing_intent)
+### IN DEVELOPMENT
+## Procedure Endpoint: Read current browsing intent of row from presence_browsing_session_data table of the database
+## URI: patient_assist_backend.presence_health.read_current_browsing_intent
     ```
     This procedure calculates and returns the current browsing intent of a row in the presence_browsing_session_data
     table of the database for the given id parameter.
@@ -194,8 +196,8 @@
     </html>
     ```
     
-### Procedure Endpoint: Submit Browsing Data Information for Presence Health
-### (URI: patient_assist_backend.presence_health.submit_browsing_data)
+## Procedure Endpoint: Submit Browsing Data Information for Presence Health
+## URI: patient_assist_backend.presence_health.submit_browsing_data
     ```
     This procedure takes a given cookie_id corresponding to a row in the presence_browsing_session_data table along with
     client browsing data information, updates the row with that info, and returns relevant updated field data from that
@@ -288,8 +290,9 @@
     </html>
     ```
 
-##The Following 3 Endpoints Will Soon Be Depricated
-###Procedure: Enable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.enable_cta_updates)
+### The Following 3 Endpoints Will Soon Be Depricated
+## Procedure: Enable CTA Updates for a Presence Health Browsing Data Instance
+## URI: patient_assist_backend.presence_health.enable_cta_updates
     ```
     This procedure takes a given cookie_id corresponding to a presence health browsing data db row and sets its
     send_cta_updates value to True. When a given browsing data's instance is set to True, it will publish the URL
@@ -364,7 +367,8 @@
     </html>
     ```
 
-### Procedure: Disable CTA Updates for a Presence Health Browsing Data Instance (URI: patient_assist_backend.presence_health.disable_cta_updates)
+## Procedure: Disable CTA Updates for a Presence Health Browsing Data Instance 
+## URI: patient_assist_backend.presence_health.disable_cta_updates
     ```
     This procedure takes a given cookie_id corresponding to a presence health browsing data db row and sets its
     send_cta_updates value to True. When a given browsing data's instance is set to False, it will NOT publish the URL
@@ -438,7 +442,8 @@
     </html>
     ```
 
-### Updated CTA WAMP Subscription Topic (URI: patient_assist_backend.presence_health.new_ctas.<cookie_id>)
+## Updated CTA WAMP Subscription Topic
+## URI: patient_assist_backend.presence_health.new_ctas.<cookie_id>
 
 - Current Algorithm:
     - each intent keyword has an "intent index"= 10*(clicks) + hover time

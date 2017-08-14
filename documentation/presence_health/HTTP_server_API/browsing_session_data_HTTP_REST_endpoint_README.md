@@ -2,10 +2,10 @@
 
 ![Browsing Session Data ERD - Presence Health](../../db_erds/presence_health/browsing_session_data_erd.jpg)
 
-## IN DEVELOPMENT
-### Browsing Session Data: Read Method Endpoint
+### IN DEVELOPMENT
+## Browsing Session Data: Read Method Endpoint
 - To read/query rows in the presence_browsing_session_data table of the database, make a GET request to
-http://patient-assist-backend.herokuapp.com/v1/presence_browsing_session_data/
+http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_session_data/
     - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
     - The parameters given in the query string can be divided into 2 categories: "primary" and "secondary"
     

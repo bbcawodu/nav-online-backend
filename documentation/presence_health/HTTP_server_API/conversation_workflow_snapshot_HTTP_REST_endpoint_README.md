@@ -2,10 +2,10 @@
 
 ![Conversation Workflow Snapshot ERD - Presence Health](../../db_erds/presence_health/conversation_workflow_snapshot_erd.jpg)
 
-## IN DEVELOPMENT
-### Conversation Workflow Snapshot: Read Method Endpoint
+### IN DEVELOPMENT
+## Conversation Workflow Snapshot: Read Method Endpoint
 - To read/query rows in the conversation_workflow_snapshot table of the database, make a GET request to
-http://patient-assist-backend.herokuapp.com/v1/conversation_workflow_snapshot/
+http://patient-assist-backend.herokuapp.com/v1/presence_health/conversation_workflow_snapshot/
     - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
     - The parameters given in the REQUIRED query string can be divided into 2 categories: "primary" and "secondary"
     

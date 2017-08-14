@@ -2,10 +2,10 @@
 
 ![Scheduled Appointment With Navigator ERD - Presence Health](../../db_erds/presence_health/scheduled_appointment_with_navigator_erd.jpg)
 
-## IN DEVELOPMENT
-### Scheduled Appointment With Navigator: Read Method Endpoint
+### IN DEVELOPMENT
+## Scheduled Appointment With Navigator: Read Method Endpoint
 - To read/query rows in the scheduled_appointment_with_navigator table of the database, make a GET request to
-http://patient-assist-backend.herokuapp.com/v1/scheduled_appointment_with_navigator/
+http://patient-assist-backend.herokuapp.com/v1/presence_health/scheduled_appointment_with_navigator/
     - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
     - The parameters given in the REQUIRED query string can be divided into 2 categories: "primary" and "secondary"
     

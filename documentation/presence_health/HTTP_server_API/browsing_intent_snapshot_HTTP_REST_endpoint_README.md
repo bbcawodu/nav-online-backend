@@ -2,10 +2,10 @@
 
 ![Browsing Intent Snapshot ERD - Presence Health](../../db_erds/presence_health/browsing_intent_snapshot_erd.jpg)
 
-## IN DEVELOPMENT
-### Browsing Intent Snapshot: Read Method Endpoint
+### IN DEVELOPMENT
+## Browsing Intent Snapshot: Read Method Endpoint
 - To read/query rows in the consumer_browsing_intent_snapshot table of the database, make a GET request to
-http://patient-assist-backend.herokuapp.com/v1/consumer_browsing_intent_snapshot/
+http://patient-assist-backend.herokuapp.com/v1/presence_health/consumer_browsing_intent_snapshot/
     - Results returned in the response body will be filtered by the parameters given in the query string of the request url.
     - The parameters given in the query string can be divided into 2 categories: "primary" and "secondary"
     
