@@ -16,6 +16,8 @@ Graphical User Interface (GUI) that allows Presence Health Stakeholders to view 
 capacity data collected by the patient assist plugin installed on the Presence Health website. I obtain the intent,
 utilization, and capacity data for the GUI from the HTTP REST endpoints provided by the Patient Assist Browsing Data
 HTTP server.
+    - Smart Help Desk application wireframe - Presence Health:
+        ![Smart Help Desk application wireframe - Presence Health](smart_help_desk_dashboard_wireframe.jpg)
 
     ### Acceptance Stories
     - Acceptance stories for Smart Help Desk application.
@@ -26,6 +28,8 @@ HTTP server.
 - As the Patient Assist Browsing Data HTTP server, I provide RESTful HTTP endpoints that read browsing session and other 
 related data collected from the patient assist plugin for Presence Health. These endpoints can be used to provide the 
 data that the Smart Help Desk Application needs to populate its web based Graphical User Interface (GUI).
+    - Patient Assist Browsing Data HTTP server Documentation - Presence Health:
+        - [Patient Assist Browsing Data HTTP server Documentation - Presence Health](../../backend_server_api_documentation/presence_health/HTTP_server_API/index.md)
 
     ### Acceptance Stories
     - Acceptance stories for Patient Assist Browsing Data HTTP server.
