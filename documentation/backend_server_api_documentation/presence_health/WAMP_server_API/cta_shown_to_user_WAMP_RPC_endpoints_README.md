@@ -1,26 +1,26 @@
-# Browsing Intent Snapshot WAMP Server API README  - Presence Health
+## CTA Shown To User WAMP Server API README - Presence Health
 ### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
 ### All WAMP components/enpoints are in the realm: patient_assist_realm
 
-![Browsing Intent Snapshot ERD - Presence Health](../../db_erds/presence_health/browsing_intent_snapshot_erd.jpg)
+![CTA Shown To User ERD - Presence Health](../../../db_erds/presence_health/cta_shown_to_user_erd.jpg)
 
 ### IN DEVELOPMENT
-## Procedure Endpoint: Create row in the consumer_browsing_intent_snapshot table of the database
-## URI: patient_assist_backend.presence_health.create_browsing_intent_snapshot
+## Procedure Endpoint: Create row in the cta_shown_to_user table of the database
+## URI: patient_assist_backend.presence_health.create_cta_shown_to_user_record
     ```
-    This procedure creates a new row in the consumer_browsing_intent_snapshot table of the database and adds a many to
+    This procedure creates a new row in the cta_shown_to_user table of the database and adds a many to
     one relationship to the presence_browsing_session_data row whose id field matches the given browsing_session_id parameter.
     
-    Procedure uri: 'patient_assist_backend.presence_health.create_browsing_intent_snapshot'
+    Procedure uri: 'patient_assist_backend.presence_health.create_cta_shown_to_user_record'
     
     :param args: Argument list. Accepts only one argument
                  [browsing_session_id]
                  browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row to establish relation to.
       
     :return: Returns an object that has a property, kwargs. That property will have the following properties:
-            id: (type: Integer) Database id of new consumer_browsing_intent_snapshot row.
-            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that the new consumer_browsing_intent_snapshot row is related to.
-            date_created: (type: String) Date consumer_browsing_intent_snapshot row was created in "YYYY-MM-DD" format
+            id: (type: Integer) Database id of new cta_shown_to_user row.
+            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that the new cta_shown_to_user row is related to.
+            date_created: (type: String) Date cta_shown_to_user row was created in "YYYY-MM-DD" format
             keyword_clicks: (type: Integer) number of clicks corresponding to given keyword that was used to calculate the intent of this snapshot.
             keyword_hover_time: (type: Float) length of hover time corresponding to given keyword that was used to calculate the intent of this snapshot.
             calculated_intent: (type: String) Calculated intent keyword on the date this snapshot was created.
@@ -55,7 +55,7 @@
                var dl = [];
                var browsing_session_id = 1;
             
-               dl.push(session.call('patient_assist_backend.presence_health.create_browsing_intent_snapshot', [browsing_session_id]).then(
+               dl.push(session.call('patient_assist_backend.presence_health.create_cta_shown_to_user_record', [browsing_session_id]).then(
                   function (res) {
                      console.log("Result: db id:" + res.kwargs.id + 
                      ", browsing session id: " + res.kwargs.browsing_session_id +
@@ -80,13 +80,13 @@
     ```
 
 ### IN DEVELOPMENT
-## Procedure Endpoint: Read rows from consumer_browsing_intent_snapshot table of the database
-## URI: patient_assist_backend.presence_health.read_browsing_intent_snapshots
+## Procedure Endpoint: Read rows from cta_shown_to_user table of the database
+## URI: patient_assist_backend.presence_health.read_cta_shown_to_user_records
     ```
-    This procedure reads/queries the consumer_browsing_intent_snapshot table of the database for rows whose id field of
-    the related presence_browsing_session_data row matches the given id parameter.
+    This procedure reads/queries the cta_shown_to_user table of the database for rows whose id field of the related
+    presence_browsing_session_data row matches the given id parameter.
     
-    Procedure uri: 'patient_assist_backend.presence_health.read_browsing_intent_snapshots'
+    Procedure uri: 'patient_assist_backend.presence_health.read_cta_shown_to_user_records'
     
     :param args: Argument list. Accepts only one argument
                  [browsing_session_id]
@@ -94,9 +94,9 @@
       
     :return: Returns an object that has a property, kwargs. That property will have a property, data, which is an array.
     Each object in that array will have the following properties:
-            id: (type: Integer) Database id of consumer_browsing_intent_snapshot row.
+            id: (type: Integer) Database id of cta_shown_to_user row.
             browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that this row is related to.
-            date_created: (type: String) Date consumer_browsing_intent_snapshot row was created in "YYYY-MM-DD" format
+            date_created: (type: String) Date cta_shown_to_user row was created in "YYYY-MM-DD" format
             keyword_clicks: (type: Integer) number of clicks corresponding to given keyword that was used to calculate the intent of this snapshot.
             keyword_hover_time: (type: Float) length of hover time corresponding to given keyword that was used to calculate the intent of this snapshot.
             calculated_intent: (type: String) Calculated intent keyword on the date this snapshot was created.
@@ -131,20 +131,20 @@
                var dl = [];
                var browsing_session_id = 1;
             
-               dl.push(session.call('patient_assist_backend.presence_health.read_browsing_intent_snapshots', [browsing_session_id]).then(
+               dl.push(session.call('patient_assist_backend.presence_health.read_cta_shown_to_user_records', [browsing_session_id]).then(
                   function (res) {
                      var results = res.kwargs.data;
                      
                      for (i = 0; i < results.length; i++){
-                         var snapshot_row_object = results[i];
+                         var cta_shown_to_user_row_object = results[i];
                          
-                         console.log("Result: db id:" + snapshot_row_object.id + 
-                         ", browsing session id: " + snapshot_row_object.browsing_session_id +
-                         ", date created: " + snapshot_row_object.date_created +
-                         ", keyword_clicks: " + snapshot_row_object.keyword_clicks +
-                         ", keyword_hover_time: " + snapshot_row_object.keyword_hover_time +
-                         ", calculated_intent: " + snapshot_row_object.calculated_intent +
-                         ", intent_formula_version: " + snapshot_row_object.intent_formula_version);
+                         console.log("Result: db id:" + cta_shown_to_user_row_object.id + 
+                         ", browsing session id: " + cta_shown_to_user_row_object.browsing_session_id +
+                         ", date created: " + cta_shown_to_user_row_object.date_created +
+                         ", keyword_clicks: " + cta_shown_to_user_row_object.keyword_clicks +
+                         ", keyword_hover_time: " + cta_shown_to_user_row_object.keyword_hover_time +
+                         ", calculated_intent: " + cta_shown_to_user_row_object.calculated_intent +
+                         ", intent_formula_version: " + cta_shown_to_user_row_object.intent_formula_version);
                      }
                   }
                ));

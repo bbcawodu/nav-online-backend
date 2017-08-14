@@ -1,6 +1,6 @@
 # CTA Shown To User HTTP REST Endpoint README - Presence Health
 
-![CTA Shown To User ERD - Presence Health](../../db_erds/presence_health/cta_shown_to_user_erd.jpg)
+![CTA Shown To User ERD - Presence Health](../../../db_erds/presence_health/cta_shown_to_user_erd.jpg)
 
 ### IN DEVELOPMENT
 ## CTA Shown To User: Read Method Endpoint

@@ -2,7 +2,7 @@
 ### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
 ### All WAMP components/enpoints are in the realm: patient_assist_realm
 
-![Scheduled Appointment With Navigator ERD - Presence Health](../../db_erds/presence_health/scheduled_appointment_with_navigator_erd.jpg)
+![Scheduled Appointment With Navigator ERD - Presence Health](../../../db_erds/presence_health/scheduled_appointment_with_navigator_erd.jpg)
 
 ### IN DEVELOPMENT
 ## Procedure Endpoint: Create row in the scheduled_appointment_with_navigator table of the database

@@ -1,6 +1,6 @@
 # Conversation Workflow Snapshot HTTP REST Endpoint README - Presence Health
 
-![Conversation Workflow Snapshot ERD - Presence Health](../../db_erds/presence_health/conversation_workflow_snapshot_erd.jpg)
+![Conversation Workflow Snapshot ERD - Presence Health](../../../db_erds/presence_health/conversation_workflow_snapshot_erd.jpg)
 
 ### IN DEVELOPMENT
 ## Conversation Workflow Snapshot: Read Method Endpoint

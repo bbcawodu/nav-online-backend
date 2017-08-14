@@ -1,6 +1,6 @@
 # Browsing Session Data HTTP REST Endpoint README - Presence Health
 
-![Browsing Session Data ERD - Presence Health](../../db_erds/presence_health/browsing_session_data_erd.jpg)
+![Browsing Session Data ERD - Presence Health](../../../db_erds/presence_health/browsing_session_data_erd.jpg)
 
 ### IN DEVELOPMENT
 ## Browsing Session Data: Read Method Endpoint

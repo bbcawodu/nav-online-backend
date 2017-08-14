@@ -1,6 +1,6 @@
 # Browsing Intent Snapshot HTTP REST Endpoint README - Presence Health
 
-![Browsing Intent Snapshot ERD - Presence Health](../../db_erds/presence_health/browsing_intent_snapshot_erd.jpg)
+![Browsing Intent Snapshot ERD - Presence Health](../../../db_erds/presence_health/browsing_intent_snapshot_erd.jpg)
 
 ### IN DEVELOPMENT
 ## Browsing Intent Snapshot: Read Method Endpoint

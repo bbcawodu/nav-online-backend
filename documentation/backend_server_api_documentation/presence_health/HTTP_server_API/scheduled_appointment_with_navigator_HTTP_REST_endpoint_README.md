@@ -1,6 +1,6 @@
 # Scheduled Appointment With Navigator HTTP REST Endpoint README - Presence Health
 
-![Scheduled Appointment With Navigator ERD - Presence Health](../../db_erds/presence_health/scheduled_appointment_with_navigator_erd.jpg)
+![Scheduled Appointment With Navigator ERD - Presence Health](../../../db_erds/presence_health/scheduled_appointment_with_navigator_erd.jpg)
 
 ### IN DEVELOPMENT
 ## Scheduled Appointment With Navigator: Read Method Endpoint

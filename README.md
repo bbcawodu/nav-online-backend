@@ -25,12 +25,18 @@
 - NOTE: Don't forget to run migrations on the production db as well
 
 ## User Stories for the Backend Servers
-### [User Stories for the Backend Servers](documentation/user_stories/index.md)
+- User stories for the backend servers.
+
+    ### [User Stories for the Backend Servers](documentation/user_stories/index.md)
 
 ## API Docs
-### [Connecting to Browsing Data Backend Servers README](documentation/connecting_to_backend_servers.md)
+- Documentation for the API that the backend servers provide.
 
-### [Browsing Data Backend Servers API README - Presence Health](documentation/presence_health/index.md)
+    ### [Connecting to Browsing Data Backend Servers README](documentation/connecting_to_backend_servers.md)
+    
+    ### [Browsing Data Backend Servers API README - Presence Health](documentation/backend_server_api_documentation/presence_health/index.md)
 
 ## Database ERD
-### [Browsing Data Backend Database ERD](documentation/db_erds/full_db_erd.jpg)
+- Entity Relational Diagram for the database that the backend servers use.
+
+    ### [Browsing Data Backend Database ERD](documentation/db_erds/full_db_erd.jpg)
