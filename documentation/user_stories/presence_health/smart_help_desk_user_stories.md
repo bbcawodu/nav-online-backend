@@ -37,7 +37,7 @@ HTTP server.
         the user to a landing page that instructs the user to contact a Care Advisor admin to obtain valid login
         credentials.
         
-        #### Scenario 1: Smart Help Desk is visited with authorized login credentials.
+        #### Scenario 2: Smart Help Desk is visited with authorized login credentials.
         - When the Smart Help Desk application is visited with authorized login credentials, the application makes GET
         requests to the following HTTP endpoints to obtain the data to populate the GUI.
         
