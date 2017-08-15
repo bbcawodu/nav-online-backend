@@ -16,14 +16,19 @@ http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_session_
             - passing "all" as the value will return all consumer_browsing_intent_snapshot rows.
             
     - "Secondary" parameters - Any number of these parameters can be added to a request query string.
-        - "min_keyword_clicks" corresponds to the minimum value for the 'keyword'_clicks column of the presence_browsing_session_data table where 'keyword' is the corresponding intent keyword.
+        - "min_keyword_clicks" corresponds to the minimum value for the 'keyword'_clicks column of the
+        presence_browsing_session_data table where 'keyword' is the corresponding intent keyword.
             - Must be an integer.
-        - "min_'keyword'_hover_time" corresponds to the minimum value for the 'keyword'_hover_time column of the presence_browsing_session_data table where 'keyword' is the corresponding intent keyword.
+        - "min_'keyword'_hover_time" corresponds to the minimum value for the 'keyword'_hover_time column of the
+        presence_browsing_session_data table where 'keyword' is the corresponding intent keyword.
             - Must be a float.
         - "min_date" - Minimum date for the date_created column of the presence_browsing_session_data table
             - Must be given in "YYYY-MM-DD" format
         - "max_date" - Maximum date for the date_created column of the presence_browsing_session_data table
             - Must be given in "YYYY-MM-DD" format
+        - "has_conversation_workflow_snapshot" corresponds to whether a row in the presence_browsing_session_data table
+        has a relation to any rows of the conversation_workflow_snapshot table.
+            - must be of type boolean (true or false)
     
 - The response body will be JSON formatted text with the following format:
     ```
@@ -39,6 +44,7 @@ http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_session_
             ...,
             ...,
         ],
+        "purchased_cases_for_this_time_period": Integer,
         "Status": {
             "Version": 1.0,
             "Error Code": Integer,

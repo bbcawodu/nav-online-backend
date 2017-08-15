@@ -13,7 +13,7 @@ installed on the Presence Health website.
 
     ## HTTP REST Endpoint: Browsing Session Data - Presence Health
     - IN DEVELOPMENT
-    - This HTTP endpoint reads/queries the Browsing Session Data Table for Presence Health
+    - This HTTP endpoint provides the API to read/query the Browsing Session Data Table for Presence Health
     
         ### [Browsing Session Data HTTP REST Endpoint README](browsing_session_data_HTTP_REST_endpoint_README.md)
     

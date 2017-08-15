@@ -5,6 +5,7 @@
 - Download and install python 2.7 and virtualenv
 - Install PostgresSQL and create local database with privileges granted to a user.
 - Install the Heroku developer toolbar.
+- Create virtual environment in root of project directory.
 
 ## Local Installation
 - Change dir to project directory.
@@ -14,6 +15,14 @@
     - $PORT corresponds to the port number that the crossbar router worker will use to make HTTP connections
     - $DATABASE_URL corresponds to the url that the app will use to connect to your postgres db
         - The format should be: ```postgres://<db username>:<password>@localhost:<postgres port #>/<db name>```
+    - These can also be set and unset in the virtual environments activate script. This is useful because it only sets
+    the environment variables while you have the virtual environment running.
+        - Example: Added at the end of the activate script
+            ```
+            export PORT='9000'
+            export DATABASE_URL="postgres://picadmin:Healthcare60607!@localhost:5432/patientassistdb"
+            export PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}/Users/Kirabee/documents/pic_work/patient_assist_backend"
+            ```
 - Make the migrations to your local db using the following command ```alembic upgrade head```
 - You can now run the app locally using either of the following commands:
     - ```crossbar start```
