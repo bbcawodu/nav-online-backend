@@ -1,6 +1,6 @@
 # Browsing Session Data HTTP REST Endpoint README - Presence Health
 
-![Browsing Session Data ERD - Presence Health](../../../db_erds/presence_health/browsing_session_data_erd.jpg)
+![Browsing Session Data ERD - Presence Health](../../../db_erds/presence_health/presence_browsing_session_data_erd.jpg)
 
 ### IN DEVELOPMENT
 ## Browsing Session Data: Read Method Endpoint
@@ -13,7 +13,7 @@ http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_session_
         - "id" corresponds to the id column of the presence_browsing_session_data table.
             - Must be an integer
             - Can be multiple values separated by commas.
-            - passing "all" as the value will return all consumer_browsing_intent_snapshot rows.
+            - passing "all" as the value will return all presence_browsing_intent_snapshot rows.
             
     - "Secondary" parameters - Any number of these parameters can be added to a request query string.
         - "min_keyword_clicks" corresponds to the minimum value for the 'keyword'_clicks column of the
@@ -26,8 +26,8 @@ http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_session_
             - Must be given in "YYYY-MM-DD" format
         - "max_date" - Maximum date for the date_created column of the presence_browsing_session_data table
             - Must be given in "YYYY-MM-DD" format
-        - "has_conversation_workflow_snapshot" corresponds to whether a row in the presence_browsing_session_data table
-        has a relation to any rows of the conversation_workflow_snapshot table.
+        - "has_presence_conversation_workflow_snapshot" corresponds to whether a row in the presence_browsing_session_data table
+        has a relation to any rows of the presence_conversation_workflow_snapshot table.
             - must be of type boolean (true or false)
     
 - The response body will be JSON formatted text with the following format:

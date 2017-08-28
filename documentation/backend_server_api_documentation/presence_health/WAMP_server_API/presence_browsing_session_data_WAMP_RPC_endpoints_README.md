@@ -2,7 +2,7 @@
 ### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
 ### All WAMP components/enpoints are in the realm: patient_assist_realm
 
-![Browsing Session Data ERD - Presence Health](../../../db_erds/presence_health/browsing_session_data_erd.jpg)
+![Browsing Session Data ERD - Presence Health](../../../db_erds/presence_health/presence_browsing_session_data_erd.jpg)
 
 ## [Current list of intent keywords](http://picbackend.herokuapp.com/v2/cta/?intent=all)
 

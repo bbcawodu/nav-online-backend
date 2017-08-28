@@ -42,10 +42,10 @@ HTTP server.
         requests to the following HTTP endpoints to obtain the data to populate the GUI.
         
             - HTTP REST Endpoint: Browsing Session Data - Presence Health (IN DEVELOPMENT)
-                - [Browsing Session Data HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/browsing_session_data_HTTP_REST_endpoint_README.md)
+                - [Browsing Session Data HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/presence_browsing_session_data_HTTP_REST_endpoint_README.md)
                 - This HTTP endpoint provides the API to read/query from the Browsing Session Data Table for Presence Health.
                     - The Smart Help Desk application makes a request to this endpoint with parameters for the desired time
-                    period and a parameter specifying to only include rows with relations to a conversation_workflow_snapshot
+                    period and a parameter specifying to only include rows with relations to a presence_conversation_workflow_snapshot
                     table row. The data is used as the numerator for the clickthrough rate, eg. browsing sessions that started a conversation.
                     The number of objects is totaled to obtain total cases. There is a key for total number of purchased
                     cases for this time period.
@@ -54,27 +54,27 @@ HTTP server.
                     by the patient assist tool.
             
             - HTTP REST Endpoint: Browsing Intent Snapshot - Presence Health (IN DEVELOPMENT)
-                - [Browsing Intent Snapshot HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/browsing_intent_snapshot_HTTP_REST_endpoint_README.md)
+                - [Browsing Intent Snapshot HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/presence_browsing_intent_snapshot_HTTP_REST_endpoint_README.md)
                 - This HTTP endpoint provides the API to read/query from the Browsing Intent Snapshot Table for Presence Health
                     - The Smart Help Desk application makes a request to this endpoint with parameters for the desired time
                     period. The objects are half of the data for the 'gross intent' button.
             
             - HTTP REST Endpoint: CTA Shown To User - Presence Health (IN DEVELOPMENT)
-                - [CTA Shown To User HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/cta_shown_to_user_HTTP_REST_endpoint_README.md)
+                - [CTA Shown To User HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/presence_cta_shown_to_user_HTTP_REST_endpoint_README.md)
                 - This HTTP endpoint provides the API to read/query from the CTA Shown To User Table for Presence Health
                     - The Smart Help Desk application makes a request to this endpoint with parameters for the desired time
                     period. The objects are half of the data for the 'gross intent' button. The objects are also the data for the
                     'triggered intent' button.
             
             - HTTP REST Endpoint: Conversation Workflow Snapshot - Presence Health (IN DEVELOPMENT)
-                - [Conversation Workflow Snapshot HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/conversation_workflow_snapshot_HTTP_REST_endpoint_README.md)
+                - [Conversation Workflow Snapshot HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/presence_conversation_workflow_snapshot_HTTP_REST_endpoint_README.md)
                 - This HTTP endpoint provides the API to read/query from the Conversation Workflow Snapshot Table for Presence Health.
                     - The Smart Help Desk application makes a request to this endpoint with parameters for the desired time
                     period. The objects are the data for the 'conversation count' box. The objects are also the data for the
                     'session breakdown' box.
             
             - HTTP REST Endpoint: Scheduled Appointment With Navigator - Presence Health (IN DEVELOPMENT)
-                - [Scheduled Appointment With Navigator HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/scheduled_appointment_with_navigator_HTTP_REST_endpoint_README.md)
+                - [Scheduled Appointment With Navigator HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/presence_scheduled_appointment_HTTP_REST_endpoint_README.md)
                 - This HTTP endpoint provides the API to read/query from the Scheduled Appointment With Navigator Table for Presence Health.
                     - The Smart Help Desk application makes a request to this endpoint with parameters for the desired time
                     period. The objects are the data for the 'navigator appointments' box.

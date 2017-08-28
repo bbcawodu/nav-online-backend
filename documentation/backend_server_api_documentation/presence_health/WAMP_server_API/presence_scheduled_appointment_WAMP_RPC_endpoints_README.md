@@ -2,24 +2,24 @@
 ### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
 ### All WAMP components/enpoints are in the realm: patient_assist_realm
 
-![Scheduled Appointment With Navigator ERD - Presence Health](../../../db_erds/presence_health/scheduled_appointment_with_navigator_erd.jpg)
+![Scheduled Appointment With Navigator ERD - Presence Health](../../../db_erds/presence_health/presence_scheduled_appointment_erd.jpg)
 
 ### IN DEVELOPMENT
-## Procedure Endpoint: Create row in the scheduled_appointment_with_navigator table of the database
-## URI: patient_assist_backend.presence_health.create_scheduled_appointment_with_navigator_record
+## Procedure Endpoint: Create row in the presence_scheduled_appointment table of the database
+## URI: patient_assist_backend.presence_health.create_presence_scheduled_appointment_record
     ```
-    This procedure creates a new row in the scheduled_appointment_with_navigator table of the database and adds a many to
+    This procedure creates a new row in the presence_scheduled_appointment table of the database and adds a many to
     one relationship to the presence_browsing_session_data row whose id field matches the given browsing_session_id parameter.
     
-    Procedure uri: 'patient_assist_backend.presence_health.create_scheduled_appointment_with_navigator_record'
+    Procedure uri: 'patient_assist_backend.presence_health.create_presence_scheduled_appointment_record'
     
     :param args: Argument list. Accepts only one argument
                  [browsing_session_id]
                  browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row to establish relation to.
       
     :return: Returns an object that has a property, kwargs. That property will have the following properties:
-            id: (type: Integer) Database id of new scheduled_appointment_with_navigator row.
-            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that the new scheduled_appointment_with_navigator row is related to.
+            id: (type: Integer) Database id of new presence_scheduled_appointment row.
+            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that the new presence_scheduled_appointment row is related to.
             appointment_date: (type: String) Date of appointment with navigaror in "YYYY-MM-DD" format.
             navigator_first_name: (type: String) First name of the navigator that scheduled appointment is with.
             navigator_last_name: (type: String) Last name of the navigator that scheduled appointment is with.
@@ -55,7 +55,7 @@
                var dl = [];
                var browsing_session_id = 1;
             
-               dl.push(session.call('patient_assist_backend.presence_health.create_scheduled_appointment_with_navigator_record', [browsing_session_id]).then(
+               dl.push(session.call('patient_assist_backend.presence_health.create_presence_scheduled_appointment_record', [browsing_session_id]).then(
                   function (res) {
                      console.log("Result: db id:" + res.kwargs.id + 
                      ", browsing session id: " + res.kwargs.browsing_session_id +
@@ -80,13 +80,13 @@
     ```
 
 ### IN DEVELOPMENT
-## Procedure Endpoint: Read rows from scheduled_appointment_with_navigator table of the database
-## URI: patient_assist_backend.presence_health.read_scheduled_appointment_with_navigator_records
+## Procedure Endpoint: Read rows from presence_scheduled_appointment table of the database
+## URI: patient_assist_backend.presence_health.read_presence_scheduled_appointment_records
     ```
-    This procedure reads/queries the scheduled_appointment_with_navigator table of the database for rows whose id field of
+    This procedure reads/queries the presence_scheduled_appointment table of the database for rows whose id field of
     the related presence_browsing_session_data row matches the given id parameter.
     
-    Procedure uri: 'patient_assist_backend.presence_health.read_scheduled_appointment_with_navigator_records'
+    Procedure uri: 'patient_assist_backend.presence_health.read_presence_scheduled_appointment_records'
     
     :param args: Argument list. Accepts only one argument
                  [browsing_session_id]
@@ -94,8 +94,8 @@
       
     :return: Returns an object that has a property, kwargs. That property will have a property, data, which is an array.
     Each object in that array will have the following properties:
-            id: (type: Integer) Database id of scheduled_appointment_with_navigator row.
-            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that the scheduled_appointment_with_navigator row is related to.
+            id: (type: Integer) Database id of presence_scheduled_appointment row.
+            browsing_session_id: (type: Integer) Database id of presence_browsing_session_data row that the presence_scheduled_appointment row is related to.
             appointment_date: (type: String) Date of appointment with navigaror in "YYYY-MM-DD" format.
             navigator_first_name: (type: String) First name of the navigator that scheduled appointment is with.
             navigator_last_name: (type: String) Last name of the navigator that scheduled appointment is with.
@@ -131,20 +131,20 @@
                var dl = [];
                var browsing_session_id = 1;
             
-               dl.push(session.call('patient_assist_backend.presence_health.read_scheduled_appointment_with_navigator_records', [browsing_session_id]).then(
+               dl.push(session.call('patient_assist_backend.presence_health.read_presence_scheduled_appointment_records', [browsing_session_id]).then(
                   function (res) {
                      var results = res.kwargs.data;
                      
                      for (i = 0; i < results.length; i++){
-                         var scheduled_appointment_with_navigator_row_object = results[i];
+                         var presence_scheduled_appointment_row_object = results[i];
                          
-                         console.log("Result: db id:" + scheduled_appointment_with_navigator_row_object.id + 
-                         ", browsing session id: " + scheduled_appointment_with_navigator_row_object.browsing_session_id +
-                         ", appointment date: " + scheduled_appointment_with_navigator_row_object.appointment_date +
-                         ", navigator first name: " + scheduled_appointment_with_navigator_row_object.navigator_first_name +
-                         ", navigator last name: " + scheduled_appointment_with_navigator_row_object.navigator_last_name +
-                         ", navigator email: " + scheduled_appointment_with_navigator_row_object.navigator_email +
-                         ", intent of appointment: " + scheduled_appointment_with_navigator_row_object.intent_of_appointment);
+                         console.log("Result: db id:" + presence_scheduled_appointment_row_object.id + 
+                         ", browsing session id: " + presence_scheduled_appointment_row_object.browsing_session_id +
+                         ", appointment date: " + presence_scheduled_appointment_row_object.appointment_date +
+                         ", navigator first name: " + presence_scheduled_appointment_row_object.navigator_first_name +
+                         ", navigator last name: " + presence_scheduled_appointment_row_object.navigator_last_name +
+                         ", navigator email: " + presence_scheduled_appointment_row_object.navigator_email +
+                         ", intent of appointment: " + presence_scheduled_appointment_row_object.intent_of_appointment);
                      }
                   }
                ));

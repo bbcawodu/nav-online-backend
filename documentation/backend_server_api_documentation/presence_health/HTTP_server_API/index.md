@@ -15,28 +15,28 @@ installed on the Presence Health website.
     - IN DEVELOPMENT
     - This HTTP endpoint provides the API to read/query the Browsing Session Data Table for Presence Health
     
-        ### [Browsing Session Data HTTP REST Endpoint README](browsing_session_data_HTTP_REST_endpoint_README.md)
+        ### [Browsing Session Data HTTP REST Endpoint README](presence_browsing_session_data_HTTP_REST_endpoint_README.md)
     
     ## HTTP REST Endpoint: Browsing Intent Snapshot - Presence Health
     - IN DEVELOPMENT
     - This HTTP endpoint provides the API to read/query from the Browsing Intent Snapshot Table for Presence Health
     
-        ### [Browsing Intent Snapshot HTTP REST Endpoint README](browsing_intent_snapshot_HTTP_REST_endpoint_README.md)
+        ### [Browsing Intent Snapshot HTTP REST Endpoint README](presence_browsing_intent_snapshot_HTTP_REST_endpoint_README.md)
     
     ## HTTP REST Endpoint: CTA Shown To User - Presence Health
     - IN DEVELOPMENT
     - This HTTP endpoint provides the API to read/query from the CTA Shown To User Table for Presence Health
     
-        ### [CTA Shown To User HTTP REST Endpoint README](cta_shown_to_user_HTTP_REST_endpoint_README.md)
+        ### [CTA Shown To User HTTP REST Endpoint README](presence_cta_shown_to_user_HTTP_REST_endpoint_README.md)
     
     ## HTTP REST Endpoint: Conversation Workflow Snapshot - Presence Health
     - IN DEVELOPMENT
     - This HTTP endpoint provides the API to read/query from the Conversation Workflow Snapshot Table for Presence Health
     
-        ### [Conversation Workflow Snapshot HTTP REST Endpoint README](conversation_workflow_snapshot_HTTP_REST_endpoint_README.md)
+        ### [Conversation Workflow Snapshot HTTP REST Endpoint README](presence_conversation_workflow_snapshot_HTTP_REST_endpoint_README.md)
     
     ## HTTP REST Endpoint: Scheduled Appointment With Navigator - Presence Health
     - IN DEVELOPMENT
     - This HTTP endpoint provides the API to read/query from the Scheduled Appointment With Navigator Table for Presence Health
         
-        ### [Scheduled Appointment With Navigator HTTP REST Endpoint README](scheduled_appointment_with_navigator_HTTP_REST_endpoint_README.md)
+        ### [Scheduled Appointment With Navigator HTTP REST Endpoint README](presence_scheduled_appointment_HTTP_REST_endpoint_README.md)
