@@ -2,8 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from patient_assist_db_models import BROWSING_KEYWORDS
-from patient_assist_db_models import BROWSING_DATA_FIELDS
+from patient_assist_db_models.presence_db_models.base import INTENT_KEYWORDS
+from patient_assist_db_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
 from patient_assist_db_models import PresenceBrowsingData
 
 # Create Flask WSGI object
@@ -20,8 +20,8 @@ admin = Admin(app, name='Patient Assist Admin', template_mode='bootstrap3')
 
 # Create a field list for browsing data objects: for use in admin pages
 browsing_data_column_list_base = ['cookie_id', 'send_cta_updates']
-for browsing_keyword in BROWSING_KEYWORDS:
-    for field, field_type in BROWSING_DATA_FIELDS.items():
+for browsing_keyword in INTENT_KEYWORDS:
+    for field, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
         browsing_data_column_list_base.append('{}_{}'.format(browsing_keyword, field))
 browsing_data_column_list_base.append("current_intent")
 

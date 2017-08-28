@@ -1,14 +1,17 @@
 from sqlalchemy import Column
 from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Boolean
-from patient_assist_db_models import DeclarativeBase
-from patient_assist_db_models import BROWSING_KEYWORDS
-from patient_assist_db_models import BROWSING_DATA_FIELDS
+from sqlalchemy import Float
 from sys import maxint
 
+INTENT_KEYWORDS = ['oncology']
 
-class BaseBrowsingDataClass(object):
+INTENT_KEYWORD_FIELD_NAMES_W_TYPES = {
+                            "clicks": Column(Integer),
+                            "hover_time": Column(Float)
+                        }
+
+
+class BaseClassForTableWithIntentFields(object):
     @property
     def current_intent(self):
         max_intent_index_entry = {"keyword": None,
@@ -16,7 +19,7 @@ class BaseBrowsingDataClass(object):
                                   "hover_time": -maxint - 1,
                                   "intent_index": -maxint - 1}
 
-        for keyword in BROWSING_KEYWORDS:
+        for keyword in INTENT_KEYWORDS:
             keyword_clicks = getattr(self, "{}_{}".format(keyword, "clicks"))
             keyword_hover_time = getattr(self, "{}_{}".format(keyword, "hover_time"))
             keyword_data_list_entry = {"keyword": keyword,
@@ -30,20 +33,9 @@ class BaseBrowsingDataClass(object):
         return max_intent_index_entry["keyword"]
 
 
-def add_browsing_data_fields(browsing_data_table_class):
-    for browsing_keword in BROWSING_KEYWORDS:
-        for field, field_type in BROWSING_DATA_FIELDS.items():
-            setattr(browsing_data_table_class, "{}_{}".format(browsing_keword, field), field_type)
+def add_intent_keyword_fields_to_db_table(class_for_table):
+    for intent_keyword in INTENT_KEYWORDS:
+        for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
+            setattr(class_for_table, "{}_{}".format(intent_keyword, field_name), field_type)
 
-    return browsing_data_table_class
-
-
-class PresenceBrowsingData(DeclarativeBase, BaseBrowsingDataClass):
-    __tablename__ = 'presencebrowsingdata'
-
-    id = Column(Integer, primary_key=True)
-    cookie_id = Column(String(10000))
-    send_cta_updates = Column(Boolean)
-
-
-PresenceBrowsingData = add_browsing_data_fields(PresenceBrowsingData)
+    return class_for_table

@@ -1,2 +1,2 @@
 from base import *
-from browsing_data_models import *
+from .presence_db_models import *

@@ -9,7 +9,7 @@ from autobahn.twisted.util import sleep
 from patient_assist_browsing_data_components import PARSED_DB_URL
 from twistar_db_models import PresenceBrowsingData
 from utils import find_presence_health_db_entry_from_cookie_id
-from patient_assist_db_models import BROWSING_KEYWORDS
+from patient_assist_db_models.presence_db_models.base import INTENT_KEYWORDS
 from sys import maxint
 
 

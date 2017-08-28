@@ -9,7 +9,7 @@ from autobahn.twisted.wamp import ApplicationSession
 from patient_assist_browsing_data_components import PARSED_DB_URL
 from twistar_db_models import PresenceBrowsingData
 from utils import find_presence_health_db_entry_from_cookie_id
-from patient_assist_db_models import BROWSING_KEYWORDS
+from patient_assist_db_models.presence_db_models.base import INTENT_KEYWORDS
 
 
 class PresenceCollectComponent(ApplicationSession):
@@ -73,7 +73,7 @@ class PresenceCollectComponent(ApplicationSession):
 
         presence_data_instance.cookie_id = str(presence_data_instance.id)
         presence_data_instance.send_cta_updates = False
-        for browsing_keyword in BROWSING_KEYWORDS:
+        for browsing_keyword in INTENT_KEYWORDS:
             setattr(presence_data_instance, "{}_{}".format(browsing_keyword, "clicks"), 0)
             setattr(presence_data_instance, "{}_{}".format(browsing_keyword, "hover_time"), 0.0)
 
@@ -177,8 +177,8 @@ def check_browsing_data_for_args(browsing_data):
         browsing_keyword = browsing_data['keyword']
         if not isinstance(browsing_keyword, unicode) and not isinstance(browsing_keyword, str):
             raise Exception("'keyword' must be a unicode or string object.")
-        if browsing_keyword not in BROWSING_KEYWORDS:
-            raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(BROWSING_KEYWORDS)))
+        if browsing_keyword not in INTENT_KEYWORDS:
+            raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(INTENT_KEYWORDS)))
     except KeyError:
         raise Exception("'keyword' key is not present in browsing data JSON object.")
 
@@ -215,8 +215,8 @@ def update_presence_health_db_entry(browsing_data_entry, browsing_keyword, keywo
     :return: (type: twistar PresenceBrowsingData instance) Updated Presence Browsing Data instance.
     """
 
-    if browsing_keyword not in BROWSING_KEYWORDS:
-        raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(BROWSING_KEYWORDS)))
+    if browsing_keyword not in INTENT_KEYWORDS:
+        raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(INTENT_KEYWORDS)))
     else:
         clicks_field_name = "{}_{}".format(browsing_keyword, "clicks")
         entry_clicks_value = getattr(browsing_data_entry, clicks_field_name)
