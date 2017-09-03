@@ -2,7 +2,7 @@
 - These WAMP enpoints let you save and access the browsing data on a session by session basis collected from the patient
 assist tool in our database in soft real time.
 - The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
-- All WAMP components/enpoints are in the realm: patient_assist_realm
+- All WAMP components/enpoints are in the realm: presence_health_realm
 
 ## Database ERD
 - Entity Relational Diagram for the database that the Presence Health backend servers use.

@@ -1,6 +1,6 @@
 ## Conversation Workflow Snapshot WAMP Server API README - Presence Health
 ### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
-### All WAMP components/enpoints are in the realm: patient_assist_realm
+### All WAMP components/enpoints are in the realm: presence_health_realm
 
 ![Conversation Workflow Snapshot ERD - Presence Health](../../../db_erds/presence_health/presence_conversation_workflow_snapshot_erd.jpg)
 
@@ -53,7 +53,7 @@
             var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
             var connection = new autobahn.Connection({
                                url: wsuri,
-                               realm: 'patient_assist_realm'}
+                               realm: 'presence_health_realm'}
                             );
                             
             connection.onopen = function (session) {
@@ -139,7 +139,7 @@
             var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
             var connection = new autobahn.Connection({
                                url: wsuri,
-                               realm: 'patient_assist_realm'}
+                               realm: 'presence_health_realm'}
                             );
                             
             connection.onopen = function (session) {

@@ -30,7 +30,7 @@
                     ]
                 },
                 {
-                    "name": "patient_assist_realm",
+                    "name": "presence_health_realm",
                     "roles": [
                         {
                             "name": "anonymous",
@@ -72,7 +72,7 @@
                     "paths": {
                         "/": {
                              "type": "wsgi",
-                             "module": "patient_assist_admin",
+                             "module": "http_server_pkg",
                              "object": "app"
                           },
                         "staticfiles": {
@@ -81,7 +81,7 @@
                         },
                         "jsexamples": {
                             "type": "static",
-                            "directory": "../jsexamples"
+                            "directory": "../example_WAMP_server_calls/jsexamples"
                         },
                         "ws": {
                             "type": "websocket"
@@ -100,8 +100,8 @@
             "components": [
                 {
                     "type": "class",
-                    "classname": "patient_assist_browsing_data_components.PresenceCollectComponent",
-                    "realm": "patient_assist_realm",
+                    "classname": "wamp_server_components.presence_health.browsing_session_data.PresenceBrowsingSessionDataComponent",
+                    "realm": "presence_health_realm",
                     "transport": {
                         "type": "websocket",
                         "endpoint": {
@@ -114,8 +114,8 @@
                 },
                 {
                     "type": "class",
-                    "classname": "patient_assist_browsing_data_components.PublishPresenceCTASComponent",
-                    "realm": "patient_assist_realm",
+                    "classname": "wamp_server_components.presence_health.browsing_intent_snapshot.PresenceBrowsingIntentSnapshotComponent",
+                    "realm": "presence_health_realm",
                     "transport": {
                         "type": "websocket",
                         "endpoint": {

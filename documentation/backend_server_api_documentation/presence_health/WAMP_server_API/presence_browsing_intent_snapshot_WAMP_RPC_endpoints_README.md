@@ -1,6 +1,6 @@
 # Browsing Intent Snapshot WAMP Server API README  - Presence Health
 ### The websocket uri for the WAMP server is: ws://patient-assist-backend.herokuapp.com/ws
-### All WAMP components/enpoints are in the realm: patient_assist_realm
+### All WAMP components/enpoints are in the realm: presence_health_realm
 
 ![Browsing Intent Snapshot ERD - Presence Health](../../../db_erds/presence_health/presence_browsing_intent_snapshot_erd.jpg)
 
@@ -48,7 +48,7 @@
             var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
             var connection = new autobahn.Connection({
                                url: wsuri,
-                               realm: 'patient_assist_realm'}
+                               realm: 'presence_health_realm'}
                             );
                             
             connection.onopen = function (session) {
@@ -124,7 +124,7 @@
             var wsuri = "ws://patient-assist-backend.herokuapp.com/ws";
             var connection = new autobahn.Connection({
                                url: wsuri,
-                               realm: 'patient_assist_realm'}
+                               realm: 'presence_health_realm'}
                             );
                             
             connection.onopen = function (session) {
@@ -153,6 +153,88 @@
                   console.log("All finished.");
                   connection.close();
                });
+            };
+            
+            connection.open();
+          </script>
+       </body>
+    </html>
+    ```
+    
+### IN DEVELOPMENT
+## Procedure Endpoint: Delete row from presence_browsing_intent_snapshot table of the database
+## URI: patient_assist_backend.presence_health.delete_browsing_intent_snapshot
+    ```
+    This procedure reads/queries the presence_browsing_intent_snapshot table of the database for rows whose id field of
+    the related presence_browsing_session_data row matches the given id parameter.
+    
+    Procedure uri: 'patient_assist_backend.presence_health.delete_browsing_intent_snapshot'
+    
+    :param args: Argument list. Accepts only one argument
+                 [intent_snapshot_id]
+                 intent_snapshot_id: (type: Integer) Database id of related presence_browsing_session_data row.
+      
+    :return: Returns an object that has a property, kwargs. That property will have a property, data, which is an array.
+    Each object in that array will have the following properties:
+            id: (type: Integer) Database id of deleted presence_browsing_intent_snapshot row.
+    ```
+
+- Example Javascript Call
+    ```
+    <!DOCTYPE html>
+    <html>
+       <body>
+          <h1>Example Client Side Calls to Patient Assist Backend</h1>
+          <p>Open JavaScript console to watch output.</p>
+          <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+          <script>
+          try {
+               var autobahn = require('autobahn');
+               var when = require('when');
+            } catch (e) {
+               // When running in browser, AutobahnJS will
+               // be included without a module system
+               var when = autobahn.when;
+            }
+            
+            // dynamic connection uri based on file location
+            var wsuri;
+            if (document.location.origin == "file://") {
+               wsuri = "ws://127.0.0.1:8080/ws";
+            
+            } else {
+               wsuri = (document.location.protocol === "http:" ? "ws:" : "wss:") + "//" +
+                           document.location.host + "/ws";
+            }
+            
+            var connection = new autobahn.Connection({
+               url: wsuri,
+               realm: 'presence_health_realm'}
+            );
+            console.log(wsuri);
+            
+            connection.onopen = function (session) {
+               var dl = [];
+            
+               var browsing_session_id_json = {
+                   "id": '3'
+               };
+            
+                 dl.push(session.call('delete_browsing_intent_snapshot_row', [JSON.stringify(browsing_session_id_json)]).then(
+                    function (res) {
+                     console.log("Result: id:" + res.kwargs.id);
+                      },
+                      function (err) {
+                         console.log("Error:", err.error, err.args, err.kwargs);
+                      }
+                 ));
+            
+                 when.all(dl).then(function () {
+                    console.log("All finished.");
+                    connection.close();
+                 });
+            
+            
             };
             
             connection.open();

@@ -47,7 +47,7 @@ http://patient-assist-backend.herokuapp.com/v1/presence_health/presence_schedule
                 'navigator_last_name': String,
                 'navigator_email': String,
                 'appointment_date': String,
-                'date_appointment_was_made': String,
+                'intent_of_appointment': String,
                 "id": Integer,
                 "browsing_session_id": Integer,
             },
