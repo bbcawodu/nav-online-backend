@@ -19,7 +19,6 @@ assist tool installed on the Presence Health website.
         ### [Browsing Session Data WAMP RPC Endpoints README](presence_browsing_session_data_WAMP_RPC_endpoints_README.md)
     
     ## WAMP Endpoint: Browsing Intent Snapshot - Presence Health
-    - IN DEVELOPMENT
     - These WAMP endpoints provide the API to read/query from and write to the Browsing Intent Snapshot table for Presence Health
     
         ### [Browsing Intent Snapshot WAMP RPC Endpoints README](presence_browsing_intent_snapshot_WAMP_RPC_endpoints_README.md)

@@ -4,7 +4,6 @@
 
 ![Browsing Intent Snapshot ERD - Presence Health](../../../db_erds/presence_health/presence_browsing_intent_snapshot_erd.jpg)
 
-### IN DEVELOPMENT
 ## Procedure Endpoint: Create row in the presence_browsing_intent_snapshot table of the database
 ## URI: patient_assist_backend.presence_health.create_browsing_intent_snapshot
     ```
@@ -79,7 +78,6 @@
     </html>
     ```
 
-### IN DEVELOPMENT
 ## Procedure Endpoint: Read rows from presence_browsing_intent_snapshot table of the database
 ## URI: patient_assist_backend.presence_health.read_browsing_intent_snapshots
     ```
@@ -160,8 +158,7 @@
        </body>
     </html>
     ```
-    
-### IN DEVELOPMENT
+
 ## Procedure Endpoint: Delete row from presence_browsing_intent_snapshot table of the database
 ## URI: patient_assist_backend.presence_health.delete_browsing_intent_snapshot
     ```
