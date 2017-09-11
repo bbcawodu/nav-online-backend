@@ -7,10 +7,10 @@ from twistar.registry import Registry
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from blocking_orm_models.presence_db_models.base import BaseClassForTableWithIntentFields
-from blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
-from blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-from blocking_orm_models.base import CURRENT_INTENT_FORMULA_VERSION
+from sqlalchemy_blocking_orm_models.presence_db_models.base import BaseClassForTableWithIntentFields
+from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
+from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from sqlalchemy_blocking_orm_models.base import CURRENT_INTENT_FORMULA_VERSION
 
 
 # using BaseBrowsingDataClass mixin may cause problems because there is no current_intent db field, currently no probs
@@ -25,10 +25,46 @@ class PresenceBrowsingData(DBObject, BaseClassForTableWithIntentFields):
         }
     ]
 
+    def return_values_dict(self):
+        values_dict = {
+            "id": self.id
+        }
+
+        if self.date_created:
+            values_dict["date_created"] = self.date_created.isoformat()
+
+        if self.date_last_updated:
+            values_dict["date_last_updated"] = self.date_last_updated.isoformat()
+
+        for intent_keyword in INTENT_KEYWORDS:
+            for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
+                keyword_field_name = "{}_{}".format(intent_keyword, field_name)
+                values_dict[keyword_field_name] = getattr(self, keyword_field_name)
+
+        return values_dict
+
 
 # using BaseBrowsingDataClass mixin may cause problems because there is no current_intent db field, currently no probs
 class PresenceBrowsingIntentSnaphot(DBObject, BaseClassForTableWithIntentFields):
     TABLENAME = 'presence_browsing_intent_snapshot'
+
+    def return_values_dict(self):
+        values_dict = {
+            "id": self.id,
+            'presence_browsing_session_data_id': self.presence_browsing_session_data_id if hasattr(self, 'presence_browsing_session_data_id') else None,
+            "calculated_intent": self.calculated_intent,
+            "intent_formula_version": self.intent_formula_version
+        }
+
+        if self.date_created:
+            values_dict["date_created"] = self.date_created.isoformat()
+
+        for intent_keyword in INTENT_KEYWORDS:
+            for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
+                keyword_field_name = "{}_{}".format(intent_keyword, field_name)
+                values_dict[keyword_field_name] = getattr(self, keyword_field_name)
+
+        return values_dict
 
 
 Registry.register(PresenceBrowsingData, PresenceBrowsingIntentSnaphot)
@@ -103,6 +139,8 @@ def non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_id):
         returnValue(browsing_data_entry[0])
 
 
+# Maybe set presence_browsing_session_data_id on related intent snapshot row instead of using instances of twistar's
+# model and relationship classes to set the relationship. Could make it faster.
 @inlineCallbacks
 def non_blocking_create_intent_snapshot_row(browsing_session_data_row_id):
     presence_browsing_session_data_row = yield non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_row_id)
@@ -131,29 +169,10 @@ def non_blocking_create_intent_snapshot_row(browsing_session_data_row_id):
 
 @inlineCallbacks
 def non_blocking_get_intent_snapshot_rows_from_session_id(browsing_session_data_row_id):
-    def make_return_dictionary(intent_snapshot_row_obj):
-        return_value = {
-            'id': intent_snapshot_row_obj.id,
-            'date_created': intent_snapshot_row_obj.date_created.isoformat() if intent_snapshot_row_obj.date_created else None,
-            'calculated_intent': intent_snapshot_row_obj.calculated_intent,
-            'intent_formula_version': intent_snapshot_row_obj.intent_formula_version
-        }
-        for intent_keyword in INTENT_KEYWORDS:
-            for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
-                intent_field = "{}_{}".format(intent_keyword, field_name)
-                return_value[intent_field] = getattr(intent_snapshot_row_obj, intent_field)
-
-        return return_value
-
     presence_browsing_session_data_row = yield non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_row_id)
     intent_snapshots_for_this_session = yield presence_browsing_session_data_row.non_blocking_intent_snapshots.get()
 
-    intent_snapshot_values = []
-    for intent_snapshot_row in intent_snapshots_for_this_session:
-        row_values = make_return_dictionary(intent_snapshot_row)
-        intent_snapshot_values.append(row_values)
-
-    returnValue(intent_snapshot_values)
+    returnValue(intent_snapshots_for_this_session)
 
 
 @inlineCallbacks

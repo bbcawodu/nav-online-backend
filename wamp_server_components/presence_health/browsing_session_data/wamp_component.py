@@ -9,11 +9,11 @@ from twisted.enterprise import adbapi
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
-from blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-from non_blocking_orm_models.presence_db_models import non_blocking_get_browsing_session_data_row_by_id
-from non_blocking_orm_models.presence_db_models import non_blocking_create_presence_browsing_session_data_row
-from non_blocking_orm_models.presence_db_models import non_blocking_update_presence_session_row_w_submitted_data
+from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
+from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from twistar_non_blocking_orm_models.presence_db_models import non_blocking_get_browsing_session_data_row_by_id
+from twistar_non_blocking_orm_models.presence_db_models import non_blocking_create_presence_browsing_session_data_row
+from twistar_non_blocking_orm_models.presence_db_models import non_blocking_update_presence_session_row_w_submitted_data
 from wamp_server_components.base import PARSED_DB_URL
 
 
@@ -87,7 +87,7 @@ class PresenceBrowsingSessionDataComponent(ApplicationSession):
     def create_browsing_session_data_row(self):
         presence_data_instance = yield non_blocking_create_presence_browsing_session_data_row()
 
-        returnValue(CallResult(id=presence_data_instance.id))
+        returnValue(CallResult(**presence_data_instance.return_values_dict()))
 
     @inlineCallbacks
     def submit_browsing_data(self, *args):
@@ -239,27 +239,13 @@ class PresenceBrowsingSessionDataComponent(ApplicationSession):
 
             return db_id
 
-        def make_return_dictionary():
-            return_value = {
-                'id': browsing_data_row.id,
-                'date_created': browsing_data_row.date_created.isoformat() if browsing_data_row.date_created else None,
-                'date_last_updated': browsing_data_row.date_last_updated.isoformat() if browsing_data_row.date_last_updated else None
-            }
-            for intent_keyword in INTENT_KEYWORDS:
-                for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
-                    intent_field = "{}_{}".format(intent_keyword, field_name)
-                    return_value[intent_field] = getattr(browsing_data_row, intent_field)
-
-            return return_value
-
         browsing_session_id_dict = get_and_decode_json_arg(args)
 
         browsing_session_data_row_id = check_input_dict_for_id( browsing_session_id_dict)
 
         browsing_data_row = yield non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_row_id)
-        return_dictionary = make_return_dictionary()
 
-        returnValue(CallResult(**return_dictionary))
+        returnValue(CallResult(**browsing_data_row.return_values_dict()))
 
     @inlineCallbacks
     def read_current_browsing_intent(self, *args):

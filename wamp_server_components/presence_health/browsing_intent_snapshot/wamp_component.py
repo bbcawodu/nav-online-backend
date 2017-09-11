@@ -9,11 +9,11 @@ from twisted.enterprise import adbapi
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
-from blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-from non_blocking_orm_models.presence_db_models import non_blocking_get_intent_snapshot_rows_from_session_id
-from non_blocking_orm_models.presence_db_models import non_blocking_create_intent_snapshot_row
-from non_blocking_orm_models.presence_db_models import non_blocking_get_intent_snapshot_row_by_id
+from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
+from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from twistar_non_blocking_orm_models.presence_db_models import non_blocking_get_intent_snapshot_rows_from_session_id
+from twistar_non_blocking_orm_models.presence_db_models import non_blocking_create_intent_snapshot_row
+from twistar_non_blocking_orm_models.presence_db_models import non_blocking_get_intent_snapshot_row_by_id
 from wamp_server_components.base import PARSED_DB_URL
 
 
@@ -106,29 +106,13 @@ class PresenceBrowsingIntentSnapshotComponent(ApplicationSession):
 
             return db_id
 
-        def make_return_dictionary():
-            return_value = {
-                'id': intent_snapshot_row.id,
-                'date_created': intent_snapshot_row.date_created.isoformat() if intent_snapshot_row.date_created else None,
-                'calculated_intent': intent_snapshot_row.calculated_intent,
-                'intent_formula_version': intent_snapshot_row.intent_formula_version
-            }
-            for intent_keyword in INTENT_KEYWORDS:
-                for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
-                    intent_field = "{}_{}".format(intent_keyword, field_name)
-                    return_value[intent_field] = getattr(intent_snapshot_row, intent_field)
-
-            return return_value
-
         browsing_session_id_dict = get_and_decode_json_arg(args)
 
         browsing_session_data_row_id = check_input_dict_for_id(browsing_session_id_dict)
 
         intent_snapshot_row = yield non_blocking_create_intent_snapshot_row(browsing_session_data_row_id)
 
-        return_dictionary = make_return_dictionary()
-
-        returnValue(CallResult(**return_dictionary))
+        returnValue(CallResult(**intent_snapshot_row.return_values_dict()))
 
     @inlineCallbacks
     def read_browsing_intent_snapshot_rows(self, *args):
@@ -162,7 +146,7 @@ class PresenceBrowsingIntentSnapshotComponent(ApplicationSession):
 
         def make_return_dictionary():
             return_value = {
-                'intent_snapshot_rows': json.dumps(intent_snapshot_rows),
+                'intent_snapshot_rows': json.dumps([intent_snapshot_row.return_values_dict() for intent_snapshot_row in intent_snapshot_rows]),
             }
 
             return return_value
