@@ -139,12 +139,11 @@ def non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_id):
         returnValue(browsing_data_entry[0])
 
 
-# Maybe set presence_browsing_session_data_id on related intent snapshot row instead of using instances of twistar's
-# model and relationship classes to set the relationship. Could make it faster.
 @inlineCallbacks
 def non_blocking_create_intent_snapshot_row(browsing_session_data_row_id):
     presence_browsing_session_data_row = yield non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_row_id)
     intent_snapshot_row = PresenceBrowsingIntentSnaphot()
+    intent_snapshot_row.presence_browsing_session_data_id = presence_browsing_session_data_row.id
 
     for browsing_keyword in INTENT_KEYWORDS:
         keyword_clicks_field_name = "{}_{}".format(browsing_keyword, "clicks")
@@ -160,9 +159,6 @@ def non_blocking_create_intent_snapshot_row(browsing_session_data_row_id):
     intent_snapshot_row.date_created = current_date_time
 
     intent_snapshot_row = yield intent_snapshot_row.save()
-    intent_snapshots_for_this_session = yield presence_browsing_session_data_row.non_blocking_intent_snapshots.get()
-    intent_snapshots_for_this_session.append(intent_snapshot_row)
-    yield presence_browsing_session_data_row.non_blocking_intent_snapshots.set(intent_snapshots_for_this_session)
 
     returnValue(intent_snapshot_row)
 

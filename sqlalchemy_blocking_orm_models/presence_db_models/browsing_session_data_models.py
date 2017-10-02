@@ -21,7 +21,8 @@ class PresenceBrowsingData(DeclarativeBase, BaseClassForTableWithIntentFields):
 
     def return_values_dict(self):
         values_dict = {
-            "id": self.id
+            "id": self.id,
+            "current_intent": self.current_intent
         }
 
         if self.date_created:

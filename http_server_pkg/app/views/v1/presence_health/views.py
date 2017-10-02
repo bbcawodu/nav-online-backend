@@ -118,5 +118,5 @@ class PresenceBrowsingIntentSnapshotGETEndpoint(MethodView, JSONGETRspMixin):
     parse_GET_request_and_add_response = parse_get_params_logic
 set_intent_keyworc_accepted_http_get_params_for_class_view(PresenceBrowsingIntentSnapshotGETEndpoint)
 
-# app.add_url_rule('/v1/presence_health/browsing_session_data/', view_func=PresenceBrowsingSessionDataGETEndpoint.as_view('presence_browsing_session_data'))
-# app.add_url_rule('/v1/presence_health/browsing_intent_snapshot/', view_func=PresenceBrowsingIntentSnapshotGETEndpoint.as_view('presence_browsing_intent_snapshot'))
+app.add_url_rule('/v1/presence_health/browsing_session_data/', view_func=PresenceBrowsingSessionDataGETEndpoint.as_view('presence_browsing_session_data'))
+app.add_url_rule('/v1/presence_health/browsing_intent_snapshot/', view_func=PresenceBrowsingIntentSnapshotGETEndpoint.as_view('presence_browsing_intent_snapshot'))

@@ -2,7 +2,6 @@
 
 ![Browsing Session Data ERD - Presence Health](../../../db_erds/presence_health/presence_browsing_session_data_erd.jpg)
 
-### IN DEVELOPMENT
 ## Browsing Session Data: Read Method Endpoint
 - To read/query rows in the presence_browsing_session_data table of the database, make a GET request to
 http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_session_data/

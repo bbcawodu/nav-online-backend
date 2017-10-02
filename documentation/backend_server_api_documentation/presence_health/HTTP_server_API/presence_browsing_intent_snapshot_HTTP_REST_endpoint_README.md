@@ -2,7 +2,6 @@
 
 ![Browsing Intent Snapshot ERD - Presence Health](../../../db_erds/presence_health/presence_browsing_intent_snapshot_erd.jpg)
 
-### IN DEVELOPMENT
 ## Browsing Intent Snapshot: Read Method Endpoint
 - To read/query rows in the presence_browsing_intent_snapshot table of the database, make a GET request to
 http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_intent_snapshot/
@@ -36,13 +35,13 @@ http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_intent_s
     {
         "Data": [
             {
-                "keyword_clicks": Integer,
-                "keyword'_hover_time": Float,
+                "'keyword'_clicks": Integer,
+                "'keyword'_hover_time": Float,
                 'calculated_intent': String,
                 'intent_formula_version': String,
                 'date_created': String,
                 "id": Integer,
-                "browsing_session_id": Integer,
+                "session_id": Integer,
             },
             ...,
             ...,
