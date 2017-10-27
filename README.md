@@ -33,6 +33,9 @@
 - Updates to app will now be connected to commits to the git repo
 - NOTE: Don't forget to run migrations on the production db as well
 
+## Testing
+- This project has unit tests(isolated tests that test one specific function) and uses pytest as a test runner
+
 ## User Stories for the Backend Servers
 - User stories for the backend servers.
 

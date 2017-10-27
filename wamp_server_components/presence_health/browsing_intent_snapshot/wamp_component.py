@@ -4,16 +4,16 @@ import json
 
 from autobahn.twisted.wamp import ApplicationSession
 from autobahn.wamp.types import CallResult
+
 from twistar.registry import Registry
 from twisted.enterprise import adbapi
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-from twistar_non_blocking_orm_models.presence_db_models import non_blocking_get_intent_snapshot_rows_from_session_id
-from twistar_non_blocking_orm_models.presence_db_models import non_blocking_create_intent_snapshot_row
-from twistar_non_blocking_orm_models.presence_db_models import non_blocking_get_intent_snapshot_row_by_id
+from orm_models.non_blocking.presence_db_models import non_blocking_create_intent_snapshot_row
+from orm_models.non_blocking.presence_db_models import non_blocking_get_intent_snapshot_row_by_id
+from orm_models.non_blocking.presence_db_models import non_blocking_get_intent_snapshot_rows_from_session_id
+
 from wamp_server_components.base import PARSED_DB_URL
 
 

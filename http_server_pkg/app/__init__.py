@@ -1,20 +1,9 @@
 from flask import Flask
-from sqlalchemy import create_engine
-from http_server_pkg.config import SQLALCHEMY_DATABASE_URI
 
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 from flask_sqlalchemy import SQLAlchemy
 
-from sqlalchemy_blocking_orm_models import PresenceBrowsingData
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-
-from sqlalchemy.orm import sessionmaker
-
-
-engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
-Session = sessionmaker(bind=engine)
+# engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
+# Session = sessionmaker(bind=engine)
 
 # Create Flask WSGI object
 app = Flask(__name__)
@@ -23,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object('http_server_pkg.config')
 
 # # Create flask db object for WSGI app
-# db = SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 # Create admin page for Flask app
 # admin = Admin(app, name='Patient Assist Admin', template_mode='bootstrap3')

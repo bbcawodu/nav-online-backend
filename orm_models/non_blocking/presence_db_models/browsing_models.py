@@ -1,4 +1,5 @@
 from __future__ import print_function
+
 import json
 from datetime import datetime
 
@@ -7,10 +8,17 @@ from twistar.registry import Registry
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from sqlalchemy_blocking_orm_models.presence_db_models.base import BaseClassForTableWithIntentFields
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-from sqlalchemy_blocking_orm_models.base import CURRENT_INTENT_FORMULA_VERSION
+from orm_models.base import CURRENT_INTENT_FORMULA_VERSION
+from orm_models.base import current_intent_formula
+from orm_models.base import PRESENCE_INTENT_KEYWORDS
+from orm_models.base import KEYWORD_RECORDING_TYPES
+
+
+class BaseClassForTableWithIntentFields(object):
+    intent_keywords = PRESENCE_INTENT_KEYWORDS
+
+
+BaseClassForTableWithIntentFields.current_intent = property(current_intent_formula)
 
 
 # using BaseBrowsingDataClass mixin may cause problems because there is no current_intent db field, currently no probs
@@ -20,7 +28,7 @@ class PresenceBrowsingData(DBObject, BaseClassForTableWithIntentFields):
     HASMANY = [
         {
             'name': 'non_blocking_intent_snapshots',
-            'class_name': 'PresenceBrowsingIntentSnaphot',
+            'class_name': 'PresenceBrowsingIntentSnapshot',
             'foreign_key': 'presence_browsing_session_data_id'
         }
     ]
@@ -36,9 +44,9 @@ class PresenceBrowsingData(DBObject, BaseClassForTableWithIntentFields):
         if self.date_last_updated:
             values_dict["date_last_updated"] = self.date_last_updated.isoformat()
 
-        for intent_keyword in INTENT_KEYWORDS:
-            for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
-                keyword_field_name = "{}_{}".format(intent_keyword, field_name)
+        for intent_keyword in self.intent_keywords:
+            for field_type in KEYWORD_RECORDING_TYPES:
+                keyword_field_name = "{}_{}".format(intent_keyword, field_type)
                 values_dict[keyword_field_name] = getattr(self, keyword_field_name)
 
         return values_dict
@@ -59,9 +67,9 @@ class PresenceBrowsingIntentSnaphot(DBObject, BaseClassForTableWithIntentFields)
         if self.date_created:
             values_dict["date_created"] = self.date_created.isoformat()
 
-        for intent_keyword in INTENT_KEYWORDS:
-            for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
-                keyword_field_name = "{}_{}".format(intent_keyword, field_name)
+        for intent_keyword in self.intent_keywords:
+            for field_type in KEYWORD_RECORDING_TYPES:
+                keyword_field_name = "{}_{}".format(intent_keyword, field_type)
                 values_dict[keyword_field_name] = getattr(self, keyword_field_name)
 
         return values_dict
@@ -75,7 +83,7 @@ def non_blocking_create_presence_browsing_session_data_row():
     presence_browsing_session_data_row = PresenceBrowsingData()
     presence_browsing_session_data_row = yield presence_browsing_session_data_row.save()
 
-    for browsing_keyword in INTENT_KEYWORDS:
+    for browsing_keyword in PRESENCE_INTENT_KEYWORDS:
         setattr(presence_browsing_session_data_row, "{}_{}".format(browsing_keyword, "clicks"), 0)
         setattr(presence_browsing_session_data_row, "{}_{}".format(browsing_keyword, "hover_time"), 0.0)
 
@@ -101,8 +109,8 @@ def non_blocking_update_presence_session_row_w_submitted_data(presence_browsing_
     :return: (type: twistar PresenceBrowsingData instance) Updated Presence Browsing Data instance.
     """
 
-    if browsing_keyword not in INTENT_KEYWORDS:
-        raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(INTENT_KEYWORDS)))
+    if browsing_keyword not in PRESENCE_INTENT_KEYWORDS:
+        raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(json.dumps(PRESENCE_INTENT_KEYWORDS)))
     else:
         clicks_field_name = "{}_{}".format(browsing_keyword, "clicks")
         entry_clicks_value = getattr(presence_browsing_session_data_row, clicks_field_name)
@@ -145,7 +153,7 @@ def non_blocking_create_intent_snapshot_row(browsing_session_data_row_id):
     intent_snapshot_row = PresenceBrowsingIntentSnaphot()
     intent_snapshot_row.presence_browsing_session_data_id = presence_browsing_session_data_row.id
 
-    for browsing_keyword in INTENT_KEYWORDS:
+    for browsing_keyword in PRESENCE_INTENT_KEYWORDS:
         keyword_clicks_field_name = "{}_{}".format(browsing_keyword, "clicks")
         keyword_hover_time_field_name = "{}_{}".format(browsing_keyword, "hover_time")
 

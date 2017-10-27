@@ -1,12 +1,12 @@
 import datetime
-import re
-from urllib2 import unquote
 import json
-from sqlalchemy_blocking_orm_models.presence_db_models import INTENT_KEYWORDS
-from sqlalchemy_blocking_orm_models.presence_db_models import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from urllib2 import unquote
 
+import re
 from flask import request
 
+from orm_models.blocking import PRESENCE_INTENT_KEYWORDS
+from orm_models.blocking import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
 
 PARAMS_WITH_ALL_AS_ACCEPTED_VALUE = [
     'id',
@@ -306,7 +306,7 @@ def validate_get_rqst_parameter_keyword_hover_time(intent_keyword):
 
 
 def set_intent_keyword_http_get_param_validation_functions(validation_functions):
-    for intent_keyword in INTENT_KEYWORDS:
+    for intent_keyword in PRESENCE_INTENT_KEYWORDS:
         for field_name, field_type in INTENT_KEYWORD_FIELD_NAMES_W_TYPES.items():
             if field_name == 'clicks':
                 validation_function_for_keyword = validate_get_rqst_parameter_keyword_clicks(intent_keyword)

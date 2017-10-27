@@ -9,11 +9,11 @@ from twisted.enterprise import adbapi
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORDS
-from sqlalchemy_blocking_orm_models.presence_db_models.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-from twistar_non_blocking_orm_models.presence_db_models import non_blocking_get_browsing_session_data_row_by_id
-from twistar_non_blocking_orm_models.presence_db_models import non_blocking_create_presence_browsing_session_data_row
-from twistar_non_blocking_orm_models.presence_db_models import non_blocking_update_presence_session_row_w_submitted_data
+from orm_models.base import PRESENCE_INTENT_KEYWORDS
+from orm_models.non_blocking.presence_db_models import non_blocking_create_presence_browsing_session_data_row
+from orm_models.non_blocking.presence_db_models import non_blocking_get_browsing_session_data_row_by_id
+from orm_models.non_blocking.presence_db_models import non_blocking_update_presence_session_row_w_submitted_data
+
 from wamp_server_components.base import PARSED_DB_URL
 
 
@@ -172,9 +172,9 @@ class PresenceBrowsingSessionDataComponent(ApplicationSession):
                 browsing_keyword = browsing_data['keyword']
                 if not isinstance(browsing_keyword, unicode) and not isinstance(browsing_keyword, str):
                     raise Exception("'keyword' must be a unicode or string object.")
-                if browsing_keyword not in INTENT_KEYWORDS:
+                if browsing_keyword not in PRESENCE_INTENT_KEYWORDS:
                     raise Exception("'keyword' must be in the following list of accepted keywords: {}.".format(
-                        json.dumps(INTENT_KEYWORDS)))
+                        json.dumps(PRESENCE_INTENT_KEYWORDS)))
             except KeyError:
                 raise Exception("'keyword' key is not present in browsing data JSON object.")
 

@@ -78,4 +78,5 @@ class JSONGETRspMixin(object):
                 status=200,
                 mimetype='application/json'
             )
+            response.headers.add('Access-Control-Allow-Origin', '*')
             return response
