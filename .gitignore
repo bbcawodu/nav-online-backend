@@ -10,4 +10,4 @@ idea/
 *.cache
 *.pid
 *.log
-_trial_temp/
+#_trial_temp/
