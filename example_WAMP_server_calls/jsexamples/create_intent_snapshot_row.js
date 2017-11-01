@@ -34,13 +34,14 @@ connection.onopen = function (session) {
 
      dl.push(session.call('create_browsing_intent_snapshot_row', [JSON.stringify(browsing_session_id_json)]).then(
         function (res) {
-         console.log("Result: id:" + res.kwargs.id +
-             ", clicks:" + res.kwargs.oncology_clicks +
-             ", hover time: " + res.kwargs.oncology_hover_time +
-         ", date_created: " + res.kwargs.date_created +
-         ", calculated_intent: " + res.kwargs.calculated_intent +
-         ", intent_formula_version: " + res.kwargs.intent_formula_version);
-          },
+            var return_string = "Results: ";
+            for(var propertyName in res.kwargs) {
+                return_string += propertyName + ": " + res.kwargs[propertyName] + ", ";
+            }
+
+            console.log(return_string);
+
+            },
           function (err) {
              console.log("Error:", err.error, err.args, err.kwargs);
           }

@@ -27,12 +27,17 @@ connection.onopen = function (session) {
    var dl = [];
 
    var browsing_session_id_json = {
-       "id": '3'
+       "id": '12'
    };
 
      dl.push(session.call('delete_browsing_intent_snapshot_row', [JSON.stringify(browsing_session_id_json)]).then(
         function (res) {
-         console.log("Result: id:" + res.kwargs.id);
+         var return_string = "Results: ";
+            for(var propertyName in res.kwargs) {
+                return_string += propertyName + ": " + res.kwargs[propertyName] + ", ";
+            }
+
+            console.log(return_string);
           },
           function (err) {
              console.log("Error:", err.error, err.args, err.kwargs);

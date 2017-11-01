@@ -30,13 +30,13 @@ connection.onopen = function (session) {
    var dl = [];
 
    var browsing_data_obj = {"id": session_id,
-                            "keyword": "oncology",
+                            "keyword": "enrollment",
                             "keyword_clicks": 2,
                             "keyword_hover_time": 3.2};
 
    dl.push(session.call('submit_browsing_data', [JSON.stringify(browsing_data_obj)]).then(
       function (res) {
-         console.log("Result: clicks:" + res.kwargs.oncology_clicks + ", hover time: " + res.kwargs.oncology_hover_time);
+         console.log("Result: clicks:" + res.kwargs.enrollment_clicks + ", hover time: " + res.kwargs.enrollment_hover_time);
       },
       function (err) {
          console.log("Error:", err.error, err.args, err.kwargs);

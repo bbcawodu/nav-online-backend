@@ -28,7 +28,13 @@ connection.onopen = function (session) {
 
      dl.push(session.call('create_browsing_session_data_row').then(
         function (res) {
-           console.log("Result: DB ID:" + res.kwargs.id);
+           var return_string = "Results: ";
+            for(var propertyName in res.kwargs) {
+                return_string += propertyName + ": " + res.kwargs[propertyName] + ", ";
+            }
+
+            console.log(return_string);
+
            localStorage.setItem("pic_patient_assist_cookie_id", res.kwargs.id);
         }
      ));

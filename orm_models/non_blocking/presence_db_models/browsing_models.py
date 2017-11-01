@@ -53,7 +53,7 @@ class PresenceBrowsingData(DBObject, BaseClassForTableWithIntentFields):
 
 
 # using BaseBrowsingDataClass mixin may cause problems because there is no current_intent db field, currently no probs
-class PresenceBrowsingIntentSnaphot(DBObject, BaseClassForTableWithIntentFields):
+class PresenceBrowsingIntentSnapshot(DBObject, BaseClassForTableWithIntentFields):
     TABLENAME = 'presence_browsing_intent_snapshot'
 
     def return_values_dict(self):
@@ -75,13 +75,12 @@ class PresenceBrowsingIntentSnaphot(DBObject, BaseClassForTableWithIntentFields)
         return values_dict
 
 
-Registry.register(PresenceBrowsingData, PresenceBrowsingIntentSnaphot)
+Registry.register(PresenceBrowsingData, PresenceBrowsingIntentSnapshot)
 
 
 @inlineCallbacks
 def non_blocking_create_presence_browsing_session_data_row():
     presence_browsing_session_data_row = PresenceBrowsingData()
-    presence_browsing_session_data_row = yield presence_browsing_session_data_row.save()
 
     for browsing_keyword in PRESENCE_INTENT_KEYWORDS:
         setattr(presence_browsing_session_data_row, "{}_{}".format(browsing_keyword, "clicks"), 0)
@@ -150,7 +149,7 @@ def non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_id):
 @inlineCallbacks
 def non_blocking_create_intent_snapshot_row(browsing_session_data_row_id):
     presence_browsing_session_data_row = yield non_blocking_get_browsing_session_data_row_by_id(browsing_session_data_row_id)
-    intent_snapshot_row = PresenceBrowsingIntentSnaphot()
+    intent_snapshot_row = PresenceBrowsingIntentSnapshot()
     intent_snapshot_row.presence_browsing_session_data_id = presence_browsing_session_data_row.id
 
     for browsing_keyword in PRESENCE_INTENT_KEYWORDS:
@@ -181,7 +180,7 @@ def non_blocking_get_intent_snapshot_rows_from_session_id(browsing_session_data_
 
 @inlineCallbacks
 def non_blocking_get_intent_snapshot_row_by_id(intent_snapshot_row_id):
-    intent_snapshot_row = yield PresenceBrowsingIntentSnaphot.findBy(id=intent_snapshot_row_id)
+    intent_snapshot_row = yield PresenceBrowsingIntentSnapshot.findBy(id=intent_snapshot_row_id)
     if not intent_snapshot_row:
         raise Exception("No presence_browsing_intent_snapshot row found for id: {}".format(intent_snapshot_row_id))
     elif len(intent_snapshot_row) > 1:

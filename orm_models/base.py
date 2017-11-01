@@ -1,16 +1,22 @@
 from sys import maxint
 
 
-CURRENT_INTENT_FORMULA_VERSION = "1.0"
+PRESENCE_INTENT_KEYWORDS = [
+    'oncology',
+    'enrollment',
+    'womens_health',
+    'benefits',
+    'endocrinology',
+    'orthopedics'
+]
 
 KEYWORD_RECORDING_TYPES = [
     "clicks",
     "hover_time"
 ]
 
-PRESENCE_INTENT_KEYWORDS = [
-    'oncology'
-]
+
+CURRENT_INTENT_FORMULA_VERSION = "1.0"
 
 
 def current_intent_formula(self):

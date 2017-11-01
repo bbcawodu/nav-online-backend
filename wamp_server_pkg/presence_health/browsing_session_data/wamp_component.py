@@ -14,7 +14,7 @@ from orm_models.non_blocking.presence_db_models import non_blocking_create_prese
 from orm_models.non_blocking.presence_db_models import non_blocking_get_browsing_session_data_row_by_id
 from orm_models.non_blocking.presence_db_models import non_blocking_update_presence_session_row_w_submitted_data
 
-from wamp_server_components.base import PARSED_DB_URL
+from wamp_server_pkg.base import PARSED_DB_URL
 
 
 class PresenceBrowsingSessionDataComponent(ApplicationSession):
@@ -207,7 +207,7 @@ class PresenceBrowsingSessionDataComponent(ApplicationSession):
 
         presence_browsing_session_data_row = yield non_blocking_update_presence_session_row_w_submitted_data(presence_browsing_session_data_row, browsing_keyword, keyword_clicks, keyword_hover_time)
 
-        returnValue(CallResult(id=presence_browsing_session_data_row.id, oncology_clicks=presence_browsing_session_data_row.oncology_clicks, oncology_hover_time=presence_browsing_session_data_row.oncology_hover_time))
+        returnValue(CallResult(**presence_browsing_session_data_row.return_values_dict()))
 
     @inlineCallbacks
     def read_browsing_session_data_row(self, *args):

@@ -100,7 +100,7 @@
             "components": [
                 {
                     "type": "class",
-                    "classname": "wamp_server_components.presence_health.browsing_session_data.PresenceBrowsingSessionDataComponent",
+                    "classname": "wamp_server_pkg.presence_health.browsing_session_data.PresenceBrowsingSessionDataComponent",
                     "realm": "presence_health_realm",
                     "transport": {
                         "type": "websocket",
@@ -114,7 +114,7 @@
                 },
                 {
                     "type": "class",
-                    "classname": "wamp_server_components.presence_health.browsing_intent_snapshot.PresenceBrowsingIntentSnapshotComponent",
+                    "classname": "wamp_server_pkg.presence_health.browsing_intent_snapshot.PresenceBrowsingIntentSnapshotComponent",
                     "realm": "presence_health_realm",
                     "transport": {
                         "type": "websocket",

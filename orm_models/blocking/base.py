@@ -3,6 +3,7 @@ import copy
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import Float
+from sqlalchemy import literal
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -11,8 +12,8 @@ from sqlalchemy.ext.declarative import declarative_base
 DeclarativeBase = declarative_base()
 
 INTENT_KEYWORD_FIELD_NAMES_W_TYPES = {
-    "clicks": Column(Integer),
-    "hover_time": Column(Float)
+    "clicks": Column(Integer, default=0, nullable=False, server_default=literal(0)),
+    "hover_time": Column(Float, default=0.0, nullable=False, server_default=literal(0.0))
 }
 
 
