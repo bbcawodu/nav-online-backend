@@ -10,9 +10,9 @@ from twisted.enterprise import adbapi
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from orm_models.non_blocking.presence_db_models import non_blocking_create_intent_snapshot_row
-from orm_models.non_blocking.presence_db_models import non_blocking_get_intent_snapshot_row_by_id
-from orm_models.non_blocking.presence_db_models import non_blocking_get_intent_snapshot_rows_from_session_id
+from db_orm_models.non_blocking.presence_db_models import non_blocking_create_intent_snapshot_row
+from db_orm_models.non_blocking.presence_db_models import non_blocking_get_intent_snapshot_row_by_id
+from db_orm_models.non_blocking.presence_db_models import non_blocking_get_intent_snapshot_rows_from_session_id
 
 from wamp_server_pkg.base import PARSED_DB_URL
 

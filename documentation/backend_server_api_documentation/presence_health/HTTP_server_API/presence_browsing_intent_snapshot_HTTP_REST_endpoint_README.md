@@ -2,6 +2,7 @@
 
 ![Browsing Intent Snapshot ERD - Presence Health](../../../db_erds/presence_health/presence_browsing_intent_snapshot_erd.jpg)
 
+## IN TEST
 ## Browsing Intent Snapshot: Read Method Endpoint
 - To read/query rows in the presence_browsing_intent_snapshot table of the database, make a GET request to
 http://patient-assist-backend.herokuapp.com/v1/presence_health/browsing_intent_snapshot/

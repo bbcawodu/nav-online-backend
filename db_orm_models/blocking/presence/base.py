@@ -1,9 +1,9 @@
-from orm_models.base import current_intent_formula
-from orm_models.base import PRESENCE_INTENT_KEYWORDS
+from db_orm_models.base import current_intent_formula
+from db_orm_models.base import PRESENCE_INTENT_KEYWORDS
 
-from orm_models.blocking.base import filter_query_obj_by_id
-from orm_models.blocking.base import create_response_list_from_query_object
-from orm_models.blocking.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from db_orm_models.blocking.base import filter_query_obj_by_id
+from db_orm_models.blocking.base import create_response_list_from_query_object
+from db_orm_models.blocking.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
 
 
 class BaseClassForTableWithIntentFields(object):

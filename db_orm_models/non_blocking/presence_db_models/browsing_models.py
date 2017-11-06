@@ -8,10 +8,10 @@ from twistar.registry import Registry
 from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import returnValue
 
-from orm_models.base import CURRENT_INTENT_FORMULA_VERSION
-from orm_models.base import current_intent_formula
-from orm_models.base import PRESENCE_INTENT_KEYWORDS
-from orm_models.base import KEYWORD_RECORDING_TYPES
+from db_orm_models.base import CURRENT_INTENT_FORMULA_VERSION
+from db_orm_models.base import current_intent_formula
+from db_orm_models.base import PRESENCE_INTENT_KEYWORDS
+from db_orm_models.base import KEYWORD_RECORDING_TYPES
 
 
 class BaseClassForTableWithIntentFields(object):

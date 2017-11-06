@@ -1,14 +1,14 @@
 from datetime import datetime
 
 from flask.views import MethodView
-from orm_models.base import KEYWORD_RECORDING_TYPES
+from db_orm_models.base import KEYWORD_RECORDING_TYPES
 
 from http_server_pkg.app import app
 from http_server_pkg.app import db
 from http_server_pkg.app.views.v1.utils import JSONGETRspMixin
-from orm_models.blocking.presence import PRESENCE_INTENT_KEYWORDS
-from orm_models.blocking.presence import PresenceBrowsingData
-from orm_models.blocking.presence import PresenceBrowsingIntentSnapshot
+from db_orm_models.blocking.presence import PRESENCE_INTENT_KEYWORDS
+from db_orm_models.blocking.presence import PresenceBrowsingData
+from db_orm_models.blocking.presence import PresenceBrowsingIntentSnapshot
 
 
 def set_intent_keyword_accepted_http_get_params_for_class_view(class_based_view):

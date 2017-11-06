@@ -2,8 +2,8 @@ import unittest
 
 from conftest import TEST_BROWSING_DATA_VALUES
 
-from orm_models.blocking.presence import PresenceBrowsingIntentSnapshot
-from orm_models.blocking.tests.test_models.base import BlockingDBObjectsBaseTestCase
+from db_orm_models.blocking.presence import PresenceBrowsingIntentSnapshot
+from db_orm_models.blocking.tests.test_models.base import BlockingDBObjectsBaseTestCase
 
 
 class BrowsingIntentSnapshotORMModelTestCase(BlockingDBObjectsBaseTestCase, unittest.TestCase):

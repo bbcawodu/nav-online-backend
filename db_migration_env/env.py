@@ -20,7 +20,7 @@ config.set_main_option('sqlalchemy.url', environ["DATABASE_URL"])
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 # target_metadata = None
-from orm_models.blocking.base import DeclarativeBase
+from db_orm_models.blocking.base import DeclarativeBase
 target_metadata = DeclarativeBase.metadata
 
 # other values from the config, defined by the needs of env.py,

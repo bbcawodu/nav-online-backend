@@ -6,9 +6,9 @@ import copy
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from orm_models.blocking.presence import PresenceBrowsingData
-from orm_models.blocking.presence import PresenceBrowsingIntentSnapshot
-from orm_models.blocking.base import DeclarativeBase
+from db_orm_models.blocking.presence import PresenceBrowsingData
+from db_orm_models.blocking.presence import PresenceBrowsingIntentSnapshot
+from db_orm_models.blocking.base import DeclarativeBase
 
 TEST_BROWSING_DATA_VALUES = [
     {

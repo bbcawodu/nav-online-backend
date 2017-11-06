@@ -3,13 +3,13 @@ from sqlalchemy import DateTime
 from sqlalchemy import Integer
 from sqlalchemy.orm import relationship
 
-from orm_models.base import PRESENCE_INTENT_KEYWORDS
+from db_orm_models.base import PRESENCE_INTENT_KEYWORDS
 
-from orm_models.blocking.base import DeclarativeBase
-from orm_models.blocking.base import add_intent_keyword_fields_to_db_table
-from orm_models.blocking.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from db_orm_models.blocking.base import DeclarativeBase
+from db_orm_models.blocking.base import add_intent_keyword_fields_to_db_table
+from db_orm_models.blocking.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
 
-from orm_models.blocking.presence.base import BaseClassForTableWithIntentFields
+from db_orm_models.blocking.presence.base import BaseClassForTableWithIntentFields
 
 
 class PresenceBrowsingData(DeclarativeBase, BaseClassForTableWithIntentFields):

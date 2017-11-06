@@ -5,8 +5,8 @@ from urllib2 import unquote
 import re
 from flask import request
 
-from orm_models.blocking import PRESENCE_INTENT_KEYWORDS
-from orm_models.blocking import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from db_orm_models.blocking import PRESENCE_INTENT_KEYWORDS
+from db_orm_models.blocking import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
 
 PARAMS_WITH_ALL_AS_ACCEPTED_VALUE = [
     'id',

@@ -4,6 +4,13 @@ from twisted.test import proto_helpers
 
 
 class RemoteCalculationTestCase(unittest.TestCase):
+    """
+    This class tests the RemoteCalculationFactory and RemoteCalculationProtocol that make the calculation class
+    available through a network. This class tests the Server Components independent from the client. It does this
+    through mimicking client calls to the server factory and protocol classes(which act as the server):
+    1) Testing that the server protocol sends the expected result through the network(test StringTransport made
+       available by the twisted.test pkg) when it receives a line from the network that expresses an operation.
+    """
     def setUp(self):
         # Declare test factory  that instantiates protocol objects, that acts as the server in this instance, that talk
         # to clients

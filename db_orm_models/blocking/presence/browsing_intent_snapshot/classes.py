@@ -4,15 +4,15 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import Text
 
-from orm_models.base import PRESENCE_INTENT_KEYWORDS
+from db_orm_models.base import PRESENCE_INTENT_KEYWORDS
 
-from orm_models.blocking.base import DeclarativeBase
-from orm_models.blocking.base import add_intent_keyword_fields_to_db_table
-from orm_models.blocking.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
-from orm_models.blocking.base import create_response_list_from_query_object
+from db_orm_models.blocking.base import DeclarativeBase
+from db_orm_models.blocking.base import add_intent_keyword_fields_to_db_table
+from db_orm_models.blocking.base import INTENT_KEYWORD_FIELD_NAMES_W_TYPES
+from db_orm_models.blocking.base import create_response_list_from_query_object
 
-from orm_models.blocking.presence.base import BaseClassForTableWithIntentFields
-from orm_models.blocking.presence.base import filter_query_obj_by_secondary_params
+from db_orm_models.blocking.presence.base import BaseClassForTableWithIntentFields
+from db_orm_models.blocking.presence.base import filter_query_obj_by_secondary_params
 
 from methods import filter_query_obj_by_session_id
 from methods import filter_query_obj_by_intent

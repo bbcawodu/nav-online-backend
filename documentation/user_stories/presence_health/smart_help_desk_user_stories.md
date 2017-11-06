@@ -41,7 +41,7 @@ HTTP server.
         - When the Smart Help Desk application is visited with authorized login credentials, the application makes GET
         requests to the following HTTP endpoints to obtain the data to populate the GUI.
         
-            - HTTP REST Endpoint: Browsing Session Data - Presence Health (IN DEVELOPMENT)
+            - HTTP REST Endpoint: Browsing Session Data - Presence Health (IN TEST)
                 - [Browsing Session Data HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/presence_browsing_session_data_HTTP_REST_endpoint_README.md)
                 - This HTTP endpoint provides the API to read/query from the Browsing Session Data Table for Presence Health.
                     - The Smart Help Desk application makes a request to this endpoint with parameters for the desired time
@@ -53,7 +53,7 @@ HTTP server.
                     period. The data is used as the denominator for the clickthrough rate, eg. total browsing sessions started
                     by the patient assist tool.
             
-            - HTTP REST Endpoint: Browsing Intent Snapshot - Presence Health (IN DEVELOPMENT)
+            - HTTP REST Endpoint: Browsing Intent Snapshot - Presence Health (IN TEST)
                 - [Browsing Intent Snapshot HTTP REST Endpoint README](../../backend_server_api_documentation/presence_health/HTTP_server_API/presence_browsing_intent_snapshot_HTTP_REST_endpoint_README.md)
                 - This HTTP endpoint provides the API to read/query from the Browsing Intent Snapshot Table for Presence Health
                     - The Smart Help Desk application makes a request to this endpoint with parameters for the desired time
