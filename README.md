@@ -52,3 +52,8 @@
 - Entity Relational Diagram for the database that the backend servers use.
 
     ### [Browsing Data Backend Database ERD](documentation/db_erds/full_db_erd.jpg)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+

@@ -15,6 +15,7 @@ class BlockingDBObjectsBaseTestCase(object):
 
     def tearDown(self):
         self.test_session.rollback()
+        self.test_session.close()
 
     def test_retrieve_table_data_by_id(self):
         ids_to_get = [

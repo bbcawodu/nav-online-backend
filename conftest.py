@@ -126,6 +126,7 @@ def populate_test_db_for_http_server_tests(request):
         test_intent_snapshot_objects.append(intent_snapshot_model_obj)
 
     populate_session.commit()
+    populate_session.close()
 
     request.addfinalizer(delete_test_data_and_destroy_test_db)
 
